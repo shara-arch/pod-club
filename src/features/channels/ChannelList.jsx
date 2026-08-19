@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getChannels } from './channelService';
 import './channels.css';
 
-// Props:
-//   communityId  - which community's channels to load
-//   onOpenChannel(channelId)  - called when a channel row is tapped
-//   onCreateChannel()         - called when the create button is tapped
+
 export default function ChannelList({ communityId, onOpenChannel, onCreateChannel }) {
   const [channels, setChannels] = useState([]);
   const [loading, setLoading] = useState(true);

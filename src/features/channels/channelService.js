@@ -1,9 +1,4 @@
-// channelService.js
-// Every function here returns a Promise, so components don't change
-// at all when this switches from mock data to a real API.
-//
-// TODO when backend is ready: replace each function body with a fetch()
-// call, keep the same function signature and return shape.
+
 
 import { mockChannels } from './mockData';
 

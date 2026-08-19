@@ -15,9 +15,7 @@ function formatTime(isoString) {
   return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 }
 
-// Props:
-//   message      - one message object (see mockData.js for shape)
-//   onOpenThread(threadRootId) - called when "N replies" is tapped
+
 export default function MessageBubble({ message, onOpenThread }) {
   return (
     <div className="pc-message">

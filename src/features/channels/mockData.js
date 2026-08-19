@@ -1,7 +1,4 @@
-// mockData.js
-// Stand-in data shaped like what the real API will eventually return.
-// Swap channelService.js / messageService.js to fetch() calls later —
-// nothing that imports this file needs to change.
+
 
 export const mockCommunity = {
   id: 'true-crime-circle',

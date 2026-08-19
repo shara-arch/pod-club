@@ -3,10 +3,7 @@ import ChannelForm from './ChannelForm';
 import { getChannel, updateChannel } from './channelService';
 import './channels.css';
 
-// Props:
-//   channelId - which channel to edit
-//   onSaved(channel) - called after a successful update
-//   onCancel()        - called when the user backs out
+
 export default function EditChannel({ channelId, onSaved, onCancel }) {
   const [channel, setChannel] = useState(null);
   const [loading, setLoading] = useState(true);

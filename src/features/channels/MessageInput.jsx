@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import './channels.css';
 
-// Props:
-//   placeholder   - e.g. "Message #general…" or "Reply to thread…"
-//   onSend(text)  - async function called with the trimmed text on send
+
 export default function MessageInput({ placeholder = 'Message…', onSend }) {
   const [value, setValue] = useState('');
   const [sending, setSending] = useState(false);

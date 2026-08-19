@@ -5,10 +5,7 @@ import { getMessages, sendMessage } from './messageService';
 import { getChannel } from './channelService';
 import './channels.css';
 
-// Props:
-//   channelId - which channel's messages to show
-//   onOpenThread(threadRootId) - navigate to ThreadReply
-//   onBack()                    - navigate back to ChannelList
+
 export default function ChatRoom({ channelId, onOpenThread, onBack }) {
   const [channel, setChannel] = useState(null);
   const [messages, setMessages] = useState([]);

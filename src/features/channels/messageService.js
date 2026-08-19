@@ -1,5 +1,4 @@
-// messageService.js
-// Same pattern as channelService.js — mock now, fetch() later.
+
 
 import { mockMessages, mockThreads } from './mockData';
 

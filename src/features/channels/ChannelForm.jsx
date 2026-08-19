@@ -3,12 +3,7 @@ import './channels.css';
 
 const CATEGORIES = ['True Crime', 'Comedy', 'Music Lab', 'Tech & Dev', 'Culture', 'Sports Room'];
 
-// Shared by CreateChannel.jsx and EditChannel.jsx.
-// Props:
-//   initialValues  - { name, description, isPrivate, category } (optional, for edit mode)
-//   submitLabel    - text on the submit button
-//   onSubmit(values) - async function, called with form values on submit
-//   onCancel()       - called when the user backs out
+
 export default function ChannelForm({ initialValues, submitLabel = 'Create Channel', onSubmit, onCancel }) {
   const [name, setName] = useState(initialValues?.name || '');
   const [description, setDescription] = useState(initialValues?.description || '');

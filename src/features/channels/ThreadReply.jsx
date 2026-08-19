@@ -11,9 +11,6 @@ function formatWhen(isoString) {
   return sameDay ? time : `${date.toLocaleDateString([], { weekday: 'long' })} at ${time}`;
 }
 
-// Props:
-//   threadId - which thread to load (message.threadRootId from ChatRoom)
-//   onClose() - close the thread panel / navigate back
 export default function ThreadReply({ threadId, onClose }) {
   const [thread, setThread] = useState(null);
   const [loading, setLoading] = useState(true);

@@ -45,4 +45,10 @@ export default function AuthProvider( {children}) {
     setCurrentUser(null);
   };
   }
+  return (
+    // Expose authentication state and handler methods to child components
+    <AuthContext.Provider value={{ currentUser, signup, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }

@@ -10,4 +10,9 @@ export default function Login(){
   const { login, signup } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+    // Redirect target after login (defaults to dashboard)
+  const from = location.state?.from?.pathname || '/dashboard';
+
+
 }

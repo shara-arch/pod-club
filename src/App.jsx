@@ -9,14 +9,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route
+          {/* <Route
             path="/"
             element={
               <ProtectedRoute>
-               <p>WElcome to pod-club</p>
+               <p>Welcome to pod-club</p>
               </ProtectedRoute>
             }
-          />
+          /> */}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>

@@ -17,6 +17,16 @@ export default function AuthProvider( {children}) {
       localStorage.removeItem('activeUser');
     }
   }, [currentUser]);
+  // Registers a new user if the username is unique and automatically logs them in
+  const signup = (username, password) => {
+    const userExists = users.some((u) => u.username === username);
+    if (userExists) {
+      throw new Error('Username already exists.');
+    }
+    const newUser = { username, password };
+    setUsers((prev) => [...prev, newUser]);
+    setCurrentUser({ username }); // Log in user automatically after successful registration
+  };
   });
   });
 }

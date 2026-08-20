@@ -14,5 +14,20 @@ export default function Login(){
     // Redirect target after login (defaults to dashboard)
   const from = location.state?.from?.pathname || '/dashboard';
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError(''); // Reset previous error
 
+    try {
+      if (isSignUp) {
+        signup(username, password);
+      } else {
+        login(username, password);
+      }
+      // Navigate to protected page upon success
+      navigate(from, { replace: true });
+    } catch (err) {
+      setError(err.message); // Display error ("Incorrect password.")
+    }
+  };
 }

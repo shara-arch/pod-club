@@ -6,5 +6,9 @@ export default function AuthProvider( {children}) {
     // Store currently authenticated user state(load from localStorage on initial render)
   const [currentUser, setCurrentUser] = useState(() => {
     return JSON.parse(localStorage.getItem('activeUser')) || null;
+    // Store mock database of registered users; load from localStorage on initial render
+  const [users, setUsers] = useState(() => {
+    return JSON.parse(localStorage.getItem('usersDB')) || [];
+  });
   });
 }

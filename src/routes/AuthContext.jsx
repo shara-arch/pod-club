@@ -9,6 +9,14 @@ export default function AuthProvider( {children}) {
     // Store mock database of registered users; load from localStorage on initial render
   const [users, setUsers] = useState(() => {
     return JSON.parse(localStorage.getItem('usersDB')) || [];
+    // Sync active user session to localStorage or remove it on logout/expiration
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('activeUser', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('activeUser');
+    }
+  }, [currentUser]);
   });
   });
 }

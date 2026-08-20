@@ -43,12 +43,13 @@ export default function AuthProvider( {children}) {
   // Clears active user session to trigger logout across the app
   const logout = () => {
     setCurrentUser(null);
-  };
-  }
+  }; 
   return (
     // Expose authentication state and handler methods to child components
     <AuthContext.Provider value={{ currentUser, signup, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-}
+  }
+  // Custom hook for convenient consumption of AuthContext values in descendant components
+export const useAuth = () => useContext(AuthContext);

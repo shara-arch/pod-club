@@ -27,6 +27,17 @@ export default function AuthProvider( {children}) {
     setUsers((prev) => [...prev, newUser]);
     setCurrentUser({ username }); // Log in user automatically after successful registration
   };
+  // Validates credentials against stored users and updates current session state
+  const login = (username, password) => {
+    const user = users.find((u) => u.username === username);
+    if (!user) {
+      throw new Error('Username not found.');
+    }
+    if (user.password !== password) {
+      throw new Error('Incorrect password.');
+    }
+    setCurrentUser({ username });
+  };
   });
   });
 }

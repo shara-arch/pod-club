@@ -30,4 +30,50 @@ export default function Login(){
       setError(err.message); // Display error ("Incorrect password.")
     }
   };
+  return(
+    <>
+    <h1>Welcome to Pod Club</h1>
+    <form onSubmit={handleSubmit}>
+     {/* Display validation error message if authentication fails */}
+        {error && <div className="error-banner">{error}</div>}
+
+        <div className="container">
+          <label htmlFor="uname"><b>Username</b></label>
+          <input
+            id="uname"
+            type="text"
+            placeholder="Enter Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+
+          <label htmlFor="psw"><b>Password</b></label>
+          <input
+            id="psw"
+            type="password"
+            placeholder="Enter Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button type="submit">{isSignUp ? 'Sign Up' : 'Login'}</button>
+        </div>
+
+        <div className="container" style={{ backgroundColor: '#f1f1f1' }}>
+          <button 
+            type="button" 
+            className="toggle-btn"
+            onClick={() => {
+              setIsSignUp(!isSignUp);
+              setError('');
+            }}
+          >
+            {isSignUp ? 'Already have an account? Log In' : 'Need an account? Sign Up'}
+          </button>
+        </div>
+    </form>
+    </>
+  )
 }

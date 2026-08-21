@@ -5,7 +5,7 @@ import Login from './components/Login';
 import { ChannelList, ChatRoom, CreateChannel, EditChannel, ThreadReply } from './features/channels';
 import { clearActiveThread } from './features/channels/channelsSlice';
 import { mockCommunity } from './features/channels/mockData';
-import AuthProvider from './routes/AuthContext';
+import AuthProvider, { useAuth } from './routes/AuthContext';
 import ProtectedRoute from './routes/Protected';
 import React from 'react'
 import './App.css'
@@ -52,13 +52,22 @@ function DashboardPage() {
   );
 }
 
+function Landing() {
+  // Landing route that shows login/signup first and redirects authenticated users
+  const { currentUser } = useAuth();
+  if (currentUser) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  return <Login />;
+}
+
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+          <Route path="/" element={<Landing />} />
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
           <Route path="/channels" element={<ProtectedRoute><ChannelWorkspace /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />

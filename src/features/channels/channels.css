@@ -69,3 +69,13 @@
   .pc-thread__replies { @apply flex flex-1 flex-col gap-4 overflow-y-auto px-5 py-3; }
   .pc-empty-state { @apply flex flex-1 flex-col items-center justify-center px-5 py-10 text-center text-sm text-zinc-400; }
 }
+
+/* Keep the browser-owned option menu in the same dark scheme as the form. */
+.pc-form__select {
+  color-scheme: dark;
+}
+
+.pc-form__select option {
+  color: #f4f4f5;
+  background-color: #09090b;
+}

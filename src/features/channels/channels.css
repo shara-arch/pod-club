@@ -17,7 +17,7 @@
   .pc-channel-list__create-btn, .pc-form__submit { @apply cursor-pointer rounded-full border-0 bg-pod-accent px-4 py-3.5 text-[15px] font-bold text-stone-900 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60; }
   .pc-channel-list__create-btn { @apply mx-5 mt-3 mb-5; }
 
-  .pc-page-header { @apply mx-5 mt-6 flex items-start gap-4 rounded-t-2xl border border-b-0 border-pod-border bg-[linear-gradient(135deg,rgba(208,138,99,0.11),rgba(24,24,27,0.98)_44%)] px-6 pt-6 pb-5; }
+  .pc-page-header { @apply mx-6 mt-6 flex items-start gap-4 rounded-t-2xl border border-b-0 border-pod-border bg-[linear-gradient(135deg,rgba(208,138,99,0.11),rgba(24,24,27,0.98)_44%)] px-8 pt-8 pb-6; }
   .pc-page-header h2 { @apply m-0 mb-1.5 text-[22px] font-bold tracking-[-0.02em]; }
   .pc-page-header p { @apply m-0 max-w-md text-[13px] leading-5 text-zinc-400; }
   .pc-icon-button, .pc-chat__edit { @apply cursor-pointer rounded-lg border border-pod-border bg-pod-surface text-zinc-100 transition hover:border-zinc-500; }
@@ -40,26 +40,26 @@
   .pc-form__submit { @apply mt-1 rounded-xl py-3.5 text-base shadow-[0_10px_22px_rgba(208,138,99,0.18)]; }
   .pc-form__cancel { @apply cursor-pointer rounded-xl border border-pod-border bg-transparent px-3 py-3 text-zinc-400 transition hover:border-zinc-500 hover:text-zinc-100; }
 
-  .pc-chat__header { @apply flex items-center gap-2.5 border-b border-pod-border px-5 py-3.5; }
+  .pc-chat__header { @apply flex items-center gap-3 border-b border-pod-border px-6 py-4; }
   .pc-chat__header-title { @apply m-0 text-base font-bold; }
   .pc-chat__header-subtitle { @apply m-0 text-xs text-zinc-400; }
   .pc-chat__edit { @apply ml-auto px-2.5 py-1.5 text-xs; }
-  .pc-chat__messages { @apply flex flex-1 flex-col gap-[18px] overflow-y-auto px-5 py-4; }
-  .pc-message { @apply flex gap-2.5; }
+  .pc-chat__messages { @apply flex flex-1 flex-col gap-[20px] overflow-y-auto px-6 py-6; }
+  .pc-message { @apply flex gap-3.5 px-2.5; }
   .pc-message__avatar { @apply flex size-9 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-[13px] font-bold text-pod-accent; }
   .pc-message__body { @apply min-w-0 flex-1; }
   .pc-message__meta { @apply mb-[3px] flex items-baseline gap-2; }
   .pc-message__author { @apply text-sm font-bold; }
   .pc-message__time { @apply text-[11px] text-zinc-600; }
   .pc-message__text { @apply m-0 text-sm leading-[1.45] text-zinc-100; }
-  .pc-message__card { @apply mt-1.5 flex max-w-80 items-center gap-2.5 rounded-lg bg-pod-surface px-3 py-2.5; }
+  .pc-message__card { @apply mt-2 flex max-w-80 items-center gap-3 rounded-lg bg-pod-surface px-4 py-3; }
   .pc-message__card-thumb { @apply size-10 shrink-0 rounded-lg bg-zinc-800; }
   .pc-message__card-title { @apply m-0 text-[13px] font-semibold; }
   .pc-message__card-subtitle { @apply m-0 text-xs text-zinc-400; }
   .pc-message__image-caption { @apply mt-1.5 flex h-40 items-center justify-center rounded-lg bg-pod-surface text-[13px] text-zinc-600; }
   .pc-message__thread-link { @apply mt-1.5 cursor-pointer border-0 bg-transparent p-0 text-xs text-pod-accent; }
 
-  .pc-input-bar { @apply flex items-center gap-2.5 border-t border-pod-border px-4 py-3; }
+  .pc-input-bar { @apply flex items-center gap-3.5 border-t border-pod-border px-6 py-4; }
   .pc-input-bar__plus { @apply grid size-9 shrink-0 cursor-pointer place-items-center rounded-full border-0 bg-pod-surface text-lg text-zinc-400; }
   .pc-input-bar__field { @apply flex-1 rounded-full border border-pod-border bg-pod-surface px-4 py-2.5 text-sm text-zinc-100 outline-none placeholder:text-zinc-600 focus:border-pod-accent; }
   .pc-input-bar__send { @apply grid size-9 shrink-0 cursor-pointer place-items-center rounded-full border-0 bg-pod-accent text-base text-stone-900 disabled:cursor-not-allowed disabled:opacity-50; }

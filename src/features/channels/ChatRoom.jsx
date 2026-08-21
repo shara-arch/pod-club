@@ -10,6 +10,7 @@ export default function ChatRoom({ channelId, onOpenThread, onBack, onEditChanne
   const dispatch = useDispatch();
   const { activeChannel: channel, messagesByChannel, status, error } = useSelector((state) => state.channels);
   const messages = messagesByChannel[channelId] || [];
+  const bannedUsers = JSON.parse(localStorage.getItem('bannedUsers') || '[]');
 
   const featuredNames = ['general', 'weekly-recommendations', 'case-file-theories'];
   const isFeatured = channel && featuredNames.includes(channel.name);
@@ -57,9 +58,11 @@ export default function ChatRoom({ channelId, onOpenThread, onBack, onEditChanne
         {messages.length === 0 ? (
           <div className="pc-empty-state">No messages yet. Say something to get things started.</div>
         ) : (
-          messages.map((message) => (
-            <MessageBubble key={message.id} message={message} onOpenThread={onOpenThread} />
-          ))
+          messages
+            .filter((message) => !bannedUsers.includes(message.author?.name))
+            .map((message) => (
+              <MessageBubble key={message.id} message={message} onOpenThread={onOpenThread} channelName={channel.name} />
+            ))
         )}
       </div>
 

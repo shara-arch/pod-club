@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Login from './components/Login';
 import { ChannelList, ChatRoom, CreateChannel, EditChannel, ThreadReply } from './features/channels';
 import { clearActiveThread } from './features/channels/channelsSlice';
@@ -20,6 +20,16 @@ function ChannelWorkspace() {
   const [channelId, setChannelId] = useState(null);
   const [threadId, setThreadId] = useState(null);
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const inviteChannelId = query.get('invite');
+    if (inviteChannelId) {
+      setChannelId(inviteChannelId);
+      setView('chat');
+    }
+  }, [location.search]);
 
   const openChannel = (id) => { setChannelId(id); setView('chat'); };
   const returnToChannels = () => { setChannelId(null); setView('channels'); };

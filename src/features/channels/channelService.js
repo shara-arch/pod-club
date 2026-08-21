@@ -1,53 +1,36 @@
+const API_URL = '/api';
 
-
-import { mockChannels } from './mockData';
-
-// In-memory copy so create/edit/delete "persist" for the session
-let channels = [...mockChannels];
-
-const delay = (ms = 300) => new Promise((resolve) => setTimeout(resolve, ms));
-
-export async function getChannels(communityId) {
-  await delay();
-  return [...channels];
+async function request(path, options) {
+  const response = await fetch(`${API_URL}${path}`, { headers: { 'Content-Type': 'application/json' }, ...options });
+  if (!response.ok) throw new Error(`Request failed (${response.status})`);
+  return response.status === 204 ? null : response.json();
 }
 
-export async function getChannel(channelId) {
-  await delay();
-  const channel = channels.find((c) => c.id === channelId);
-  if (!channel) throw new Error(`Channel ${channelId} not found`);
-  return channel;
+export function getChannels(communityId) {
+  return request(`/channels?communityId=${encodeURIComponent(communityId)}`);
 }
 
-export async function createChannel({ name, description, isPrivate, category }) {
-  await delay();
-  if (!name || !name.trim()) {
-    throw new Error('Channel name is required');
-  }
-  const newChannel = {
-    id: name.trim().toLowerCase().replace(/\s+/g, '-'),
-    name: name.trim(),
-    description: description || '',
-    isPrivate: !!isPrivate,
-    category: category || 'True Crime',
-    lastMessage: null,
-    lastMessageAuthor: null,
-    hasUnread: false,
-  };
-  channels = [...channels, newChannel];
-  return newChannel;
+export function getChannel(channelId) {
+  return request(`/channels/${channelId}`);
 }
 
-export async function updateChannel(channelId, updates) {
-  await delay();
-  const index = channels.findIndex((c) => c.id === channelId);
-  if (index === -1) throw new Error(`Channel ${channelId} not found`);
-  channels[index] = { ...channels[index], ...updates };
-  return channels[index];
+export function createChannel({ name, description, isPrivate, category, communityId }) {
+  if (!name?.trim()) return Promise.reject(new Error('Channel name is required'));
+  const slug = name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  return request('/channels', {
+    method: 'POST',
+    body: JSON.stringify({
+      id: `${slug}-${Date.now()}`, name: name.trim(), description: description || '',
+      isPrivate: Boolean(isPrivate), category: category || 'True Crime', communityId,
+      lastMessage: null, lastMessageAuthor: null, hasUnread: false,
+    }),
+  });
 }
 
-export async function deleteChannel(channelId) {
-  await delay();
-  channels = channels.filter((c) => c.id !== channelId);
-  return true;
+export function updateChannel(channelId, updates) {
+  return request(`/channels/${channelId}`, { method: 'PATCH', body: JSON.stringify(updates) });
+}
+
+export function deleteChannel(channelId) {
+  return request(`/channels/${channelId}`, { method: 'DELETE' });
 }

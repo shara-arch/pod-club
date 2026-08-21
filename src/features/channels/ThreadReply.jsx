@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import MessageInput from './MessageInput';
-import { getThread, sendReply } from './messageService';
+import { addReply, loadThread } from './channelsSlice';
 import './channels.css';
 
 function formatWhen(isoString) {
@@ -12,34 +13,20 @@ function formatWhen(isoString) {
 }
 
 export default function ThreadReply({ threadId, onClose }) {
-  const [thread, setThread] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const { activeThread: thread, status, error } = useSelector((state) => state.channels);
 
   useEffect(() => {
-    let cancelled = false;
-    getThread(threadId)
-      .then((data) => {
-        if (!cancelled) setThread(data);
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err.message);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [threadId]);
+    dispatch(loadThread(threadId));
+  }, [threadId, dispatch]);
 
   async function handleReply(text) {
-    const newReply = await sendReply(threadId, text);
-    setThread((prev) => ({ ...prev, replies: [...prev.replies, newReply] }));
+    await dispatch(addReply({ threadId, content: text })).unwrap();
   }
 
-  if (loading) return <div className="pc-empty-state">Loading thread…</div>;
-  if (error) return <div className="pc-empty-state">Couldn't load thread: {error}</div>;
+  if (status === 'loading' && !thread) return <div className="pc-empty-state">Loading thread…</div>;
+  if (status === 'failed' && !thread) return <div className="pc-empty-state">Couldn't load thread: {error}</div>;
+  if (!thread) return null;
 
   const { rootMessage, replies } = thread;
 

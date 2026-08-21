@@ -1,36 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { getChannels } from './channelService';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadChannels } from './channelsSlice';
 import './channels.css';
 
 
 export default function ChannelList({ communityId, onOpenChannel, onCreateChannel }) {
-  const [channels, setChannels] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const { list: channels, status, error } = useSelector((state) => state.channels);
 
   useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    getChannels(communityId)
-      .then((data) => {
-        if (!cancelled) setChannels(data);
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err.message);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [communityId]);
+    dispatch(loadChannels(communityId));
+  }, [communityId, dispatch]);
 
-  if (loading) {
+  if (status === 'loading' && channels.length === 0) {
     return <div className="pc-empty-state">Loading channels…</div>;
   }
 
-  if (error) {
+  if (status === 'failed' && channels.length === 0) {
     return <div className="pc-empty-state">Couldn't load channels: {error}</div>;
   }
 

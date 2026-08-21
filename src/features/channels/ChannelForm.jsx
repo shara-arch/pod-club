@@ -95,6 +95,11 @@ export default function ChannelForm({ initialValues, submitLabel = 'Create Chann
       <button className="pc-form__submit" type="submit" disabled={submitting}>
         {submitting ? 'Saving…' : submitLabel}
       </button>
+      {onCancel && (
+        <button className="pc-form__cancel" type="button" onClick={onCancel}>
+          Cancel
+        </button>
+      )}
     </form>
   );
 }

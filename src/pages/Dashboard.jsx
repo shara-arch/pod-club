@@ -55,7 +55,7 @@ export default function Dashboard() {
                 <div className="t-title">{t.title}</div>
                 <div className="t-sub muted">with Sarah & Leo</div>
                 <div className="t-bottom">
-                  <div className="listeners muted">{t.listeners}</div>
+                  <div className="listeners"><span className="dot" aria-hidden></span><span className="text">{t.listeners}</span></div>
                   <button className="btn small">Listen</button>
                 </div>
               </div>

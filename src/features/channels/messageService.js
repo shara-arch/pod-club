@@ -19,6 +19,21 @@ export function sendMessage(channelId, content) {
   });
 }
 
+export function sendImageMessage(channelId, imageUrl, caption = 'Shared image') {
+  return request('/messages', {
+    method: 'POST',
+    body: JSON.stringify({ id: `m-${Date.now()}`, channelId, author: CURRENT_USER, imageUrl, imageCaption: caption, timestamp: new Date().toISOString(), type: 'image', replyCount: 0 }),
+  });
+}
+
+export function updateMessage(messageId, content) {
+  return request(`/messages/${messageId}`, { method: 'PATCH', body: JSON.stringify({ content: content.trim(), edited: true }) });
+}
+
+export function removeMessage(messageId) {
+  return request(`/messages/${messageId}`, { method: 'DELETE' });
+}
+
 export function getThread(threadId) {
   return request(`/threads/${threadId}`);
 }

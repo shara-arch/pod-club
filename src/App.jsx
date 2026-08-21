@@ -6,11 +6,13 @@ import { ChannelList, ChatRoom, CreateChannel, EditChannel, ThreadReply } from '
 import { clearActiveThread } from './features/channels/channelsSlice';
 import { mockCommunity } from './features/channels/mockData';
 import AuthProvider, { useAuth } from './routes/AuthContext';
-import ProtectedRoute from './routes/Protected';
+import ProtectedRoute, { AdminRoute } from './routes/Protected';
 import React from 'react'
 import './App.css'
 import Navbar from './components/Navbar'
 import Dashboard from './pages/Dashboard'
+import Profile from './pages/Profile';
+import AdminDashboard from './pages/AdminDashboard';
 
 
 function ChannelWorkspace() {
@@ -67,9 +69,13 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Login initialMode="register" />} />
+          <Route path="/admin/login" element={<Login admin />} />
           <Route path="/" element={<Landing />} />
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
           <Route path="/channels" element={<ProtectedRoute><ChannelWorkspace /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

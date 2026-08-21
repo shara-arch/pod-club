@@ -58,9 +58,10 @@ export default function ChannelList({ communityId, onOpenChannel, onCreateChanne
         </div>
       )}
 
-      <button className="pc-channel-list__create-btn" onClick={() => onCreateChannel?.()}>
-        + Create Channel
+      <button className="pc-channel-list__create-btn" disabled={channels.length >= 5} onClick={() => onCreateChannel?.()}>
+        {channels.length >= 5 ? 'Channel limit reached (5)' : '+ Create Channel'}
       </button>
+      <p className="px-5 pb-5 text-center text-xs text-zinc-500">You can create up to five channels. Invitations let members join private channels.</p>
     </div>
   );
 }

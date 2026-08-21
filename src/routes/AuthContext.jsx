@@ -2,6 +2,7 @@ import React, {createContext, useContext, useState, useEffect} from 'react';
 
 // Create a Context object to hold and share authentication state across components
 const AuthContext = createContext(null);
+const ADMIN_ACCOUNT = { username: 'admin', password: 'podclub', email: 'admin@podclub.local', role: 'admin' };
 export default function AuthProvider( {children}) {
     // Store currently authenticated user state(load from localStorage on initial render)
   const [currentUser, setCurrentUser] = useState(() => {
@@ -20,14 +21,26 @@ export default function AuthProvider( {children}) {
     }
   }, [currentUser]);
   // Registers a new user if the username is unique and automatically logs them in
-  const signup = (username, password) => {
+  // Very small client-side hash to avoid storing raw plain-text passwords (not production secure)
+  const hashPassword = (pw) => {
+    try {
+      return typeof window !== 'undefined' ? window.btoa(pw) : Buffer.from(pw, 'utf-8').toString('base64');
+    } catch (e) {
+      return pw;
+    }
+  };
+
+  const signup = (username, password, email) => {
     const userExists = users.some((u) => u.username === username);
     if (userExists) {
       throw new Error('Username already exists.');
     }
-    const newUser = { username, password };
-    setUsers((prev) => [...prev, newUser]);
-    setCurrentUser({ username }); // Log in user automatically after successful registration
+    const hashed = hashPassword(password);
+    const newUser = { username, password: hashed, email: email || '', role: 'member' };
+    const updated = [...users, newUser];
+    setUsers(updated);
+    localStorage.setItem('usersDB', JSON.stringify(updated));
+    setCurrentUser({ username, email: email || '', role: 'member' }); // Log in user automatically after successful registration
   };
   // Validates credentials against stored users and updates current session state
   const login = (username, password) => {
@@ -35,10 +48,18 @@ export default function AuthProvider( {children}) {
     if (!user) {
       throw new Error('Username not found.');
     }
-    if (user.password !== password) {
+    const hashed = hashPassword(password);
+    // Support legacy plain text entries by checking either
+    if (user.password !== hashed && user.password !== password) {
       throw new Error('Incorrect password.');
     }
-    setCurrentUser({ username });
+    setCurrentUser({ username, email: user.email || '', role: user.role || 'member' });
+  };
+  const adminLogin = (username, password) => {
+    if (username !== ADMIN_ACCOUNT.username || password !== ADMIN_ACCOUNT.password) {
+      throw new Error('Use the demo admin credentials: admin / podclub.');
+    }
+    setCurrentUser(ADMIN_ACCOUNT);
   };
   // Clears active user session to trigger logout across the app
   const logout = () => {
@@ -46,7 +67,7 @@ export default function AuthProvider( {children}) {
   }; 
   return (
     // Expose authentication state and handler methods to child components
-    <AuthContext.Provider value={{ currentUser, signup, login, logout }}>
+    <AuthContext.Provider value={{ currentUser, signup, login, adminLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );

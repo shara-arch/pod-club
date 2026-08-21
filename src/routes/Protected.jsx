@@ -13,3 +13,12 @@ export default function ProtectedRoute({ children }) {
 
   return children;
 }
+
+export function AdminRoute({ children }) {
+  const { currentUser } = useAuth();
+  const location = useLocation();
+
+  if (!currentUser) return <Navigate to="/admin/login" state={{ from: location }} replace />;
+  if (currentUser.role !== 'admin') return <Navigate to="/dashboard" replace />;
+  return children;
+}

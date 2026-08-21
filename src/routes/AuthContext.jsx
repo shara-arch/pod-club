@@ -10,7 +10,19 @@ export default function AuthProvider( {children}) {
   })
     // Store mock database of registered users; load from localStorage on initial render
   const [users, setUsers] = useState(() => {
-    return JSON.parse(localStorage.getItem('usersDB')) || [];
+    try {
+      const stored = JSON.parse(localStorage.getItem('usersDB')) || [];
+      // Ensure a demo admin account exists in the users DB for convenience (frontend-only)
+      const hasAdmin = stored.some((u) => u.username === ADMIN_ACCOUNT.username);
+      if (!hasAdmin) {
+        const withAdmin = [ { ...ADMIN_ACCOUNT, password: typeof window !== 'undefined' ? window.btoa(ADMIN_ACCOUNT.password) : Buffer.from(ADMIN_ACCOUNT.password).toString('base64') }, ...stored ];
+        localStorage.setItem('usersDB', JSON.stringify(withAdmin));
+        return withAdmin;
+      }
+      return stored;
+    } catch (e) {
+      return [ { ...ADMIN_ACCOUNT, password: typeof window !== 'undefined' ? window.btoa(ADMIN_ACCOUNT.password) : Buffer.from(ADMIN_ACCOUNT.password).toString('base64') } ];
+    }
   })
     // Sync active user session to localStorage or remove it on logout/expiration
   useEffect(() => {

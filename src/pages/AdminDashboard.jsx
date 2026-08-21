@@ -118,6 +118,12 @@ export default function AdminDashboard() {
               {reports.length === 0 && (
                 <div className="p-6 text-center text-sm text-zinc-400">No reports — the moderation queue is empty.</div>
               )}
+
+              {/* Banned users panel */}
+              <div className="p-5 border-t border-[#292929] bg-[#0e0e0e]">
+                <h3 className="text-sm font-bold text-white">Banned users</h3>
+                <BannedList />
+              </div>
             </div>
           </section>
         </div>
@@ -127,3 +133,35 @@ export default function AdminDashboard() {
 }
 
 function Stat({ label, value }) { return <div className="rounded-2xl border border-[#292929] bg-[#101010] p-5"><p className="text-sm text-zinc-400">{label}</p><p className="mt-2 text-3xl font-bold text-[#e8935f]">{value}</p></div>; }
+
+function BannedList() {
+  const [banned, setBanned] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('bannedUsers') || '[]'); } catch (e) { return []; }
+  });
+
+  function unban(username) {
+    const updated = banned.filter((u) => u !== username);
+    setBanned(updated);
+    localStorage.setItem('bannedUsers', JSON.stringify(updated));
+    // also clear any report-level banned marks
+    try {
+      const reports = JSON.parse(localStorage.getItem('adminReports') || '[]');
+      const cleared = reports.map((r) => r.user === username ? { ...r, banned: false } : r);
+      localStorage.setItem('adminReports', JSON.stringify(cleared));
+    } catch (e) {}
+    // trigger a small page refresh so the parent picks up changes (keeps demo simple)
+    window.dispatchEvent(new Event('storage'));
+  }
+
+  if (banned.length === 0) return <p className="mt-2 text-sm text-zinc-400">No banned users</p>;
+  return (
+    <div className="mt-3 space-y-2">
+      {banned.map((u) => (
+        <div className="flex items-center justify-between rounded-md bg-[#121212] px-3 py-2" key={u}>
+          <span className="text-sm text-white">{u}</span>
+          <button onClick={() => unban(u)} className="text-xs px-2 py-1 rounded bg-emerald-400/10 text-emerald-300">Unban</button>
+        </div>
+      ))}
+    </div>
+  );
+}

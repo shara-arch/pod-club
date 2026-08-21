@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../routes/AuthContext'
 
 export default function Navbar() {
-  const { logout } = useAuth()
+  const { logout, currentUser } = useAuth()
   const navigate = useNavigate()
 
   function handleLogout() {
@@ -19,8 +19,9 @@ export default function Navbar() {
       <div className="nav-right">
         <Link to="/channels" className="cta">Channels</Link>
         <Link to="/dashboard" className="cta">Dashboard</Link>
-        <Link to="/login" className="cta">Login</Link>
-        <button type="button" className="cta" onClick={handleLogout}>Log out</button>
+        {!currentUser && <Link to="/login" className="cta">Login</Link>}
+        {currentUser && currentUser.role === 'admin' && <Link to="/admin" className="cta">Admin</Link>}
+        {currentUser && <button type="button" className="cta" onClick={handleLogout}>Log out</button>}
       </div>
     </nav>
   )

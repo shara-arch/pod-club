@@ -2,9 +2,14 @@
 
 @theme {
   --color-pod-bg: #0a0a0a;
+  --color-pod-page: #09090b;
   --color-pod-surface: #161616;
   --color-pod-border: #2a2a2a;
   --color-pod-accent: #e8935f;
+  --color-pod-text: #f4f4f5;
+  --color-pod-muted: #a1a1aa;
+  --color-pod-muted-deep: #52525b;
+  --color-pod-raised: #27272a;
 }
 
 @layer base {
@@ -15,4 +20,109 @@
   body {
     @apply bg-zinc-950;
   }
+}
+
+:root {
+  --pod-bg: #0a0a0a;
+  --pod-page: #09090b;
+  --pod-surface: #161616;
+  --pod-border: #2a2a2a;
+  --pod-accent: #e8935f;
+  --pod-text: #f4f4f5;
+  --pod-secondary: #a1a1aa;
+  --pod-muted: #52525b;
+  --pod-raised: #27272a;
+  --pod-error: #f87171;
+  --pod-button-text: #1c1917;
+  --text: var(--pod-secondary);
+  --text-h: var(--pod-text);
+  --bg: var(--pod-bg);
+  --border: var(--pod-border);
+  --code-bg: var(--pod-surface);
+  --accent: var(--pod-accent);
+  --accent-bg: color-mix(in srgb, var(--pod-accent) 14%, transparent);
+  --accent-border: color-mix(in srgb, var(--pod-accent) 45%, transparent);
+  --muted: var(--pod-muted);
+  --card-bg: var(--pod-surface);
+  --social-bg: rgba(255,255,255,0.02);
+  --shadow: rgba(0, 0, 0, 0.6) 0 8px 24px -6px;
+
+  --sans: Inter, system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: Inter, system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+}
+
+#root {
+  width: 1126px;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  border-inline: 1px solid var(--border);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+  @media (max-width: 1024px) {
+    font-size: 32px;
+    margin: 20px 0;
+  }
+}
+
+h2 {
+  font-size: 20px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+}
+
+p {
+  margin: 0;
+  color: var(--text);
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
 }

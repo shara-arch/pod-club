@@ -17,27 +17,28 @@
   .pc-channel-list__create-btn, .pc-form__submit { @apply cursor-pointer rounded-full border-0 bg-pod-accent px-4 py-3.5 text-[15px] font-bold text-stone-900 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60; }
   .pc-channel-list__create-btn { @apply mx-5 mt-3 mb-5; }
 
-  .pc-page-header { @apply flex items-start gap-3 px-5 pt-5 pb-1; }
-  .pc-page-header h2 { @apply m-0 mb-1 text-xl font-bold; }
-  .pc-page-header p { @apply m-0 text-[13px] text-zinc-400; }
+  .pc-page-header { @apply mx-5 mt-6 flex items-start gap-4 rounded-t-2xl border border-b-0 border-pod-border bg-[linear-gradient(135deg,rgba(208,138,99,0.11),rgba(24,24,27,0.98)_44%)] px-6 pt-6 pb-5; }
+  .pc-page-header h2 { @apply m-0 mb-1.5 text-[22px] font-bold tracking-[-0.02em]; }
+  .pc-page-header p { @apply m-0 max-w-md text-[13px] leading-5 text-zinc-400; }
   .pc-icon-button, .pc-chat__edit { @apply cursor-pointer rounded-lg border border-pod-border bg-pod-surface text-zinc-100 transition hover:border-zinc-500; }
-  .pc-icon-button { @apply grid size-[34px] place-items-center text-lg; }
+  .pc-icon-button { @apply grid size-9 shrink-0 place-items-center rounded-xl border-pod-accent/30 bg-pod-accent/10 text-lg text-pod-accent transition hover:bg-pod-accent hover:text-stone-950; }
 
-  .pc-form { @apply flex flex-col gap-5 px-5 pt-4 pb-8; }
+  .pc-form { @apply mx-5 flex flex-col gap-6 rounded-b-2xl border border-pod-border bg-pod-bg px-6 pt-7 pb-7 shadow-[0_18px_40px_rgba(0,0,0,0.22)]; }
   .pc-create-channel .pc-form { @apply px-6 pt-6 pb-10 sm:px-8; }
-  .pc-form__label { @apply mb-2 block text-xs font-semibold tracking-[0.04em] text-zinc-400 uppercase; }
-  .pc-form__input, .pc-form__textarea, .pc-form__select { @apply w-full rounded-lg border border-pod-border bg-pod-surface px-3.5 py-3 text-[15px] text-zinc-100 outline-none transition placeholder:text-zinc-600 focus:border-pod-accent; }
-  .pc-form__textarea { @apply min-h-24 resize-y; }
-  .pc-form__row { @apply flex items-center justify-between gap-3; }
+  .pc-form > div { @apply rounded-xl border border-zinc-800/80 bg-zinc-900/35 p-4 transition focus-within:border-pod-accent/60 focus-within:bg-zinc-900/65; }
+  .pc-form__label { @apply mb-2.5 block text-[11px] font-bold tracking-[0.08em] text-zinc-400 uppercase; }
+  .pc-form__input, .pc-form__textarea, .pc-form__select { @apply w-full rounded-lg border border-zinc-700/80 bg-zinc-950/80 px-3.5 py-3 text-[15px] text-zinc-100 outline-none transition placeholder:text-zinc-600 focus:border-pod-accent focus:ring-4 focus:ring-pod-accent/10; }
+  .pc-form__textarea { @apply min-h-28 resize-y leading-6; }
+  .pc-form__row { @apply flex items-center justify-between gap-5; }
   .pc-form__row-text strong { @apply block text-[15px] font-semibold; }
   .pc-form__row-text span { @apply text-[13px] text-zinc-400; }
-  .pc-toggle { @apply relative h-[27px] w-[46px] shrink-0 cursor-pointer rounded-full border-0 bg-pod-border transition; }
+  .pc-toggle { @apply relative h-[28px] w-[48px] shrink-0 cursor-pointer rounded-full border border-zinc-700 bg-pod-border transition; }
   .pc-toggle--on { @apply bg-pod-accent; }
-  .pc-toggle__knob { @apply absolute top-[3px] left-[3px] size-[21px] rounded-full bg-white transition; }
+  .pc-toggle__knob { @apply absolute top-[3px] left-[3px] size-[20px] rounded-full bg-white shadow-sm transition; }
   .pc-toggle--on .pc-toggle__knob { @apply translate-x-[19px]; }
   .pc-form__error { @apply -mt-2 mb-0 text-[13px] text-red-400; }
-  .pc-form__submit { @apply mt-2 text-base; }
-  .pc-form__cancel { @apply cursor-pointer rounded-full border border-pod-border bg-transparent px-3 py-3 text-zinc-400 transition hover:border-zinc-500 hover:text-zinc-100; }
+  .pc-form__submit { @apply mt-1 rounded-xl py-3.5 text-base shadow-[0_10px_22px_rgba(208,138,99,0.18)]; }
+  .pc-form__cancel { @apply cursor-pointer rounded-xl border border-pod-border bg-transparent px-3 py-3 text-zinc-400 transition hover:border-zinc-500 hover:text-zinc-100; }
 
   .pc-chat__header { @apply flex items-center gap-2.5 border-b border-pod-border px-5 py-3.5; }
   .pc-chat__header-title { @apply m-0 text-base font-bold; }

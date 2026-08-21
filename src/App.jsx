@@ -7,6 +7,11 @@ import { clearActiveThread } from './features/channels/channelsSlice';
 import { mockCommunity } from './features/channels/mockData';
 import AuthProvider from './routes/AuthContext';
 import ProtectedRoute from './routes/Protected';
+import React from 'react'
+import './App.css'
+import Navbar from './components/Navbar'
+import Dashboard from './pages/Dashboard'
+
 
 function ChannelWorkspace() {
   const [view, setView] = useState('channels');
@@ -19,8 +24,10 @@ function ChannelWorkspace() {
   const closeThread = () => { dispatch(clearActiveThread()); setThreadId(null); setView('chat'); };
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#25201d_0,#090909_42%)] p-0 sm:p-4 lg:p-8">
-      <section className="mx-auto min-h-screen w-full overflow-hidden border-0 border-pod-border bg-pod-bg shadow-2xl sm:min-h-[calc(100vh-2rem)] sm:max-w-[760px] sm:rounded-[18px] sm:border lg:min-h-[calc(100vh-4rem)]" aria-label={`${mockCommunity.name} channel workspace`}>
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#161616_0,#0A0A0A_45%,#09090B_100%)] p-0 sm:p-4 lg:p-8">
+      <Navbar />
+
+      <section className="channel-workspace mx-auto min-h-screen w-full overflow-hidden border-0 border-pod-border bg-pod-bg shadow-2xl sm:min-h-[calc(100vh-2rem)] sm:max-w-[760px] sm:rounded-[18px] sm:border lg:min-h-[calc(100vh-4rem)]" aria-label={`${mockCommunity.name} channel workspace`}>
         <header className="border-b border-pod-border px-5 py-6 font-sans text-zinc-100">
           <span className="text-[11px] font-bold tracking-[0.08em] text-pod-accent uppercase">Pod Club community</span>
           <h1 className="my-1 text-2xl font-bold">{mockCommunity.name}</h1>
@@ -36,13 +43,24 @@ function ChannelWorkspace() {
   );
 }
 
+function DashboardPage() {
+  return (
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#161616_0,#0A0A0A_45%,#09090B_100%)]">
+      <Navbar />
+      <Dashboard />
+    </main>
+  );
+}
+
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<ProtectedRoute><ChannelWorkspace /></ProtectedRoute>} />
+          <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+          <Route path="/channels" element={<ProtectedRoute><ChannelWorkspace /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

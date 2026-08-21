@@ -55,11 +55,8 @@ function DashboardPage() {
 }
 
 function Landing() {
-  // Landing route that shows login/signup first and redirects authenticated users
-  const { currentUser } = useAuth();
-  if (currentUser) {
-    return <Navigate to="/dashboard" replace />;
-  }
+  // Always show the login/signup card first on site entry. The Login component
+  // itself will offer a "Continue as <user>" action when a session exists.
   return <Login />;
 }
 

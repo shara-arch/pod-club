@@ -11,7 +11,7 @@ export default function Login({ initialMode = 'login', admin = false }) {
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login, signup, adminLogin } = useAuth();
+  const { login, signup, adminLogin, currentUser, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -86,6 +86,17 @@ export default function Login({ initialMode = 'login', admin = false }) {
               {admin ? 'Moderation tools for community administrators' : isSignUp ? 'Create your account to join' : 'Welcome back, sign in to continue'}
             </p>
           </div>
+
+          {/* If user is already authenticated, show continue/switch options */}
+          {currentUser && !admin && (
+            <div className="mx-8 mb-4 px-4 py-3 rounded-lg bg-white/5 border border-white/6 text-sm text-white/80 flex flex-col items-center gap-3">
+              <div>Signed in as <strong className="text-white">{currentUser.username}</strong></div>
+              <div className="flex gap-3">
+                <button type="button" onClick={() => navigate(from, { replace: true })} className="px-4 py-2 rounded-md bg-[#e8935f] text-black font-medium">Continue</button>
+                <button type="button" onClick={() => { logout(); setError(''); }} className="px-4 py-2 rounded-md border border-white/10 text-white bg-black/20">Switch account</button>
+              </div>
+            </div>
+          )}
 
           {/* Error banner */}
           {error && (

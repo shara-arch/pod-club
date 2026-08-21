@@ -39,6 +39,11 @@ export default function Dashboard() {
           </div>
           <h2>{featured.title}</h2>
           <p className="muted">{featured.subtitle}</p>
+
+          {/* Decorative image for the featured card (True Crime Circle) */}
+          <div className="featured-art" aria-hidden>
+            <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=60" alt="True Crime collage" />
+          </div>
         </div>
       </section>
 

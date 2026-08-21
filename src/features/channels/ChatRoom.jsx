@@ -11,6 +11,9 @@ export default function ChatRoom({ channelId, onOpenThread, onBack, onEditChanne
   const { activeChannel: channel, messagesByChannel, status, error } = useSelector((state) => state.channels);
   const messages = messagesByChannel[channelId] || [];
 
+  const featuredNames = ['general', 'weekly-recommendations', 'case-file-theories'];
+  const isFeatured = channel && featuredNames.includes(channel.name);
+
   useEffect(() => {
     dispatch(loadChannel(channelId));
     dispatch(loadMessages(channelId));
@@ -25,7 +28,7 @@ export default function ChatRoom({ channelId, onOpenThread, onBack, onEditChanne
   if (!channel) return null;
 
   return (
-    <div className="pc-screen">
+    <div className={`pc-screen ${isFeatured ? 'pc-screen--featured' : ''}`}>
       <div className="pc-chat__header">
         {onBack && (
           <button onClick={onBack} aria-label="Back" style={{ background: 'none', border: 'none', color: 'inherit', fontSize: 18, cursor: 'pointer' }}>

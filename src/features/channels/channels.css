@@ -77,6 +77,20 @@
   .pc-thread__reply-count { @apply mt-2.5 mb-0 text-[13px] font-semibold text-pod-accent; }
   .pc-thread__replies { @apply flex flex-1 flex-col gap-4 overflow-y-auto px-5 py-3; }
   .pc-empty-state { @apply flex flex-1 flex-col items-center justify-center px-5 py-10 text-center text-sm text-zinc-400; }
+
+  /* Increased inner padding for featured channels (e.g., #general) */
+  .pc-screen--featured .pc-chat__header { @apply px-8 py-6; }
+  .pc-screen--featured .pc-chat__header-title { @apply m-0 text-[18px] font-extrabold; }
+  .pc-screen--featured .pc-chat__header-subtitle { @apply m-0 mt-1 text-sm text-zinc-400; }
+
+  .pc-screen--featured .pc-chat__messages { @apply px-8 py-8 gap-6; }
+  .pc-screen--featured .pc-message { @apply gap-4 px-3; }
+  .pc-screen--featured .pc-message__body { @apply px-1; }
+  .pc-screen--featured .pc-message__card { @apply px-4 py-3; }
+
+  .pc-screen--featured .pc-input-bar { @apply px-6 py-4 gap-3.5; }
+  .pc-screen--featured .pc-empty-state { @apply px-6 py-12; text-align: left; }
+
 }
 
 /* Keep the browser-owned option menu in the same dark scheme as the form. */

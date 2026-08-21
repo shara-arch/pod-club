@@ -39,22 +39,22 @@ export default function Login() {
             "url('https://i.pinimg.com/1200x/8b/02/46/8b0246de71fd8cfb1d69703f8c922920.jpg')",
         }}
       />
-      {/* Dark overlay with orange tint */}
-      <div className="absolute inset-0 bg-black/80" />
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-950/40 via-black/60 to-black/90" />
+      {/* Dark overlay (opacity decreased from 80% to 60% for +20% image visibility) */}
+      <div className="absolute inset-0 bg-black/60" />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/50 to-black/80" />
 
       {/* Login card */}
       <div className="relative z-10 w-full max-w-md">
-        <div className="backdrop-blur-xl bg-black/60 border border-orange-500/30 rounded-2xl shadow-2xl shadow-orange-500/10 overflow-hidden">
+        <div className="backdrop-blur-xl bg-[#161616]/90 border border-[#2a2a2a] rounded-2xl shadow-2xl shadow-black/50 overflow-hidden">
           {/* Header */}
           <div className="px-8 pt-10 pb-6 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg shadow-orange-500/30 mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#e8935f] shadow-lg shadow-[#e8935f]/20 mb-4">
               <Headphones className="w-8 h-8 text-black" strokeWidth={2.5} />
             </div>
             <h1 className="text-3xl font-bold text-white tracking-tight">
               Pod Club
             </h1>
-            <p className="text-orange-200/70 mt-2 text-sm">
+            <p className="text-white/70 mt-2 text-sm">
               {isSignUp ? 'Create your account to join' : 'Welcome back, sign in to continue'}
             </p>
           </div>
@@ -72,12 +72,12 @@ export default function Login() {
             <div className="space-y-2">
               <label
                 htmlFor="uname"
-                className="block text-sm font-medium text-orange-200"
+                className="block text-sm font-medium text-[#e8935f]"
               >
                 Username
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-orange-400/60" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#e8935f]/70" />
                 <input
                   id="uname"
                   type="text"
@@ -85,7 +85,7 @@ export default function Login() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
-                  className="w-full pl-11 pr-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all"
+                  className="w-full pl-11 pr-4 py-3 rounded-lg bg-black/40 border border-[#2a2a2a] text-white placeholder-white/30 focus:outline-none focus:border-[#e8935f] focus:ring-2 focus:ring-[#e8935f]/20 transition-all"
                 />
               </div>
             </div>
@@ -93,12 +93,12 @@ export default function Login() {
             <div className="space-y-2">
               <label
                 htmlFor="psw"
-                className="block text-sm font-medium text-orange-200"
+                className="block text-sm font-medium text-[#e8935f]"
               >
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-orange-400/60" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#e8935f]/70" />
                 <input
                   id="psw"
                   type="password"
@@ -106,24 +106,24 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full pl-11 pr-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all"
+                  className="w-full pl-11 pr-4 py-3 rounded-lg bg-black/40 border border-[#2a2a2a] text-white placeholder-white/30 focus:outline-none focus:border-[#e8935f] focus:ring-2 focus:ring-[#e8935f]/20 transition-all"
                 />
               </div>
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-black font-semibold tracking-wide shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all"
+              className="w-full py-3 rounded-lg bg-[#e8935f] text-black font-semibold tracking-wide shadow-lg shadow-[#e8935f]/20 hover:bg-[#e8935f]/90 hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               {isSignUp ? 'Sign Up' : 'Log In'}
             </button>
 
             <div className="relative pt-2">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-white/10" />
+                <div className="w-full border-t border-[#2a2a2a]" />
               </div>
               <div className="relative flex justify-center">
-                <span className="px-3 bg-black/60 text-xs text-white/40 uppercase tracking-wider">
+                <span className="px-3 bg-[#161616] text-xs text-white/40 uppercase tracking-wider">
                   or
                 </span>
               </div>
@@ -135,7 +135,7 @@ export default function Login() {
                 setIsSignUp(!isSignUp);
                 setError('');
               }}
-              className="w-full py-3 rounded-lg bg-white/5 border border-white/10 text-orange-300 hover:bg-orange-500/10 hover:border-orange-500/40 transition-all text-sm font-medium"
+              className="w-full py-3 rounded-lg bg-black/40 border border-[#2a2a2a] text-[#e8935f] hover:bg-[#e8935f]/10 hover:border-[#e8935f]/40 transition-all text-sm font-medium"
             >
               {isSignUp
                 ? 'Already have an account? Log In'

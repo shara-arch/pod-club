@@ -8,6 +8,15 @@
   .pc-channel-list__subtitle { @apply m-0 text-sm text-zinc-400; }
   .pc-channel-list__items { @apply flex flex-col gap-2 px-3 py-2; }
   .pc-channel-item { @apply flex cursor-pointer items-center gap-3 rounded-[14px] border border-transparent bg-pod-surface px-4 py-3.5 transition hover:border-pod-border hover:bg-zinc-800 focus-visible:border-pod-accent focus-visible:outline-none; }
+
+  /* Featured channel rows (general, weekly-recommendations, case-file-theories) */
+  .pc-channel-item--featured { @apply px-6 py-4 bg-[linear-gradient(90deg,rgba(255,255,255,0.02),transparent)] border-pod-border; box-shadow: 0 6px 18px rgba(0,0,0,0.45); }
+  .pc-channel-item--featured .pc-channel-item__name { @apply text-[15px] font-extrabold text-center; }
+  .pc-channel-item--featured .pc-channel-item__preview { @apply text-[13px] text-zinc-300 text-center mt-1; }
+  .pc-channel-item--featured .pc-channel-item__icon { @apply text-pod-accent; }
+  .pc-channel-item--featured .pc-channel-item__unread { @apply size-2 rounded-full bg-pod-accent; margin-left: 8px; }
+  .pc-channel-item--featured + .pc-channel-item--featured { margin-top: 8px; }
+
   .pc-channel-item__icon { @apply w-5 shrink-0 text-center text-lg font-semibold text-pod-accent; }
   .pc-channel-item__body { @apply min-w-0 flex-1; }
   .pc-channel-item__name { @apply m-0 mb-0.5 text-[15px] font-semibold; }

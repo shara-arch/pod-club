@@ -1,49 +1,14 @@
-@import "tailwindcss";
-
-@theme {
-  --color-pod-bg: #0a0a0a;
-  --color-pod-page: #09090b;
-  --color-pod-surface: #161616;
-  --color-pod-border: #2a2a2a;
-  --color-pod-accent: #e8935f;
-  --color-pod-text: #f4f4f5;
-  --color-pod-muted: #a1a1aa;
-  --color-pod-muted-deep: #52525b;
-  --color-pod-raised: #27272a;
-}
-
-@layer base {
-  html, body, #root {
-    @apply m-0 min-h-screen min-w-80;
-  }
-
-  body {
-    @apply bg-zinc-950;
-  }
-}
-
 :root {
-  --pod-bg: #0a0a0a;
-  --pod-page: #09090b;
-  --pod-surface: #161616;
-  --pod-border: #2a2a2a;
-  --pod-accent: #e8935f;
-  --pod-text: #f4f4f5;
-  --pod-secondary: #a1a1aa;
-  --pod-muted: #52525b;
-  --pod-raised: #27272a;
-  --pod-error: #f87171;
-  --pod-button-text: #1c1917;
-  --text: var(--pod-secondary);
-  --text-h: var(--pod-text);
-  --bg: var(--pod-bg);
-  --border: var(--pod-border);
-  --code-bg: var(--pod-surface);
-  --accent: var(--pod-accent);
-  --accent-bg: color-mix(in srgb, var(--pod-accent) 14%, transparent);
-  --accent-border: color-mix(in srgb, var(--pod-accent) 45%, transparent);
-  --muted: var(--pod-muted);
-  --card-bg: var(--pod-surface);
+  --text: #9b918b;
+  --text-h: #ffffff;
+  --bg: #0b0b0b; /* match Figma near-black */
+  --border: #1f1f1f;
+  --code-bg: #141414;
+  --accent: #d08a63; /* warm peach/orange accent from Figma */
+  --accent-bg: rgba(208, 138, 99, 0.08);
+  --accent-border: rgba(208, 138, 99, 0.35);
+  --muted: #9b9b9b;
+  --card-bg: #0f0f0f;
   --social-bg: rgba(255,255,255,0.02);
   --shadow: rgba(0, 0, 0, 0.6) 0 8px 24px -6px;
 
@@ -63,6 +28,17 @@
 
   @media (max-width: 1024px) {
     font-size: 16px;
+  }
+}
+
+/* keep compatibility for light-preference but default to dark look */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #ffffff;
+    --text: #333;
+    --text-h: #08060d;
+    --border: #e5e4e7;
+    --card-bg: #fff;
   }
 }
 

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './channels.css';
 
 
-export default function MessageInput({ placeholder = 'Message…', onSend }) {
+export default function MessageInput({ placeholder = 'Message…', onSend, onSendImage }) {
   const [value, setValue] = useState('');
   const [sending, setSending] = useState(false);
+  const fileInput = useRef(null);
 
   async function handleSend() {
     const trimmed = value.trim();
@@ -17,6 +18,14 @@ export default function MessageInput({ placeholder = 'Message…', onSend }) {
       setSending(false);
     }
   }
+  function handleImage(event) {
+    const file = event.target.files?.[0];
+    if (!file || !onSendImage) return;
+    const reader = new FileReader();
+    reader.onload = async () => { await onSendImage(reader.result, file.name); };
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  }
 
   function handleKeyDown(e) {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -27,7 +36,8 @@ export default function MessageInput({ placeholder = 'Message…', onSend }) {
 
   return (
     <div className="pc-input-bar">
-      <button className="pc-input-bar__plus" type="button" aria-label="Attach">
+      <input ref={fileInput} onChange={handleImage} type="file" accept="image/*" className="hidden" />
+      <button className="pc-input-bar__plus" type="button" aria-label="Attach image" onClick={() => fileInput.current?.click()}>
         +
       </button>
       <input

@@ -13,7 +13,7 @@ export default function CreateChannel({ communityId, onCreated, onCancel }) {
   }
 
   return (
-    <div className="pc-screen">
+    <div className="pc-screen pc-create-channel">
       <div className="pc-page-header">
         <button className="pc-icon-button" onClick={onCancel} type="button" aria-label="Back to channels">←</button>
         <div><h2>Create a channel</h2><p>Start a focused conversation for your community.</p></div>

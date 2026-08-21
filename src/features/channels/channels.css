@@ -24,6 +24,7 @@
   .pc-icon-button { @apply grid size-[34px] place-items-center text-lg; }
 
   .pc-form { @apply flex flex-col gap-5 px-5 pt-4 pb-8; }
+  .pc-create-channel .pc-form { @apply px-6 pt-6 pb-10 sm:px-8; }
   .pc-form__label { @apply mb-2 block text-xs font-semibold tracking-[0.04em] text-zinc-400 uppercase; }
   .pc-form__input, .pc-form__textarea, .pc-form__select { @apply w-full rounded-lg border border-pod-border bg-pod-surface px-3.5 py-3 text-[15px] text-zinc-100 outline-none transition placeholder:text-zinc-600 focus:border-pod-accent; }
   .pc-form__textarea { @apply min-h-24 resize-y; }

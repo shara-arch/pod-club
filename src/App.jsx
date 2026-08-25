@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation, Link } from 'react-router-dom';
+import { Compass, Headphones, MessageSquare, Plus, Radio, ShieldCheck, UsersRound } from 'lucide-react';
 import Login from './components/Login';
 import { ChannelList, ChatRoom, CreateChannel, EditChannel, ThreadReply } from './features/channels';
 import { clearActiveThread } from './features/channels/channelsSlice';
@@ -36,14 +37,20 @@ function ChannelWorkspace() {
   const closeThread = () => { dispatch(clearActiveThread()); setThreadId(null); setView('chat'); };
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#161616_0,#0A0A0A_45%,#09090B_100%)] p-0 sm:p-4 lg:p-8">
-      <Navbar />
+    <main className="channel-page">
+      <aside className="channel-sidebar">
+        <Link to="/dashboard" className="club-brand"><span className="brand-mark"><Headphones size={17} /></span>PodClub</Link>
+        <button className="gold-button channel-new" onClick={() => setView('create')}><Plus size={16} /> New channel</button>
+        <span className="channel-count">Create up to 5 private rooms</span>
+        <nav className="channel-side-nav"><Link to="/dashboard"><Compass size={16} /> Discover rooms</Link><button className="active" onClick={returnToChannels}><MessageSquare size={16} /> Your channels</button></nav>
+        <div className="channel-sidebar-note"><b>Invite-only rooms</b><p>Bring the people you actually want to talk with.</p></div>
+        <Link to="/profile" className="channel-profile-link">Account settings →</Link>
+      </aside>
 
-      <section className="channel-workspace mx-auto min-h-screen w-full overflow-hidden border-0 border-pod-border bg-pod-bg shadow-2xl sm:min-h-[calc(100vh-2rem)] sm:max-w-[760px] sm:rounded-[18px] sm:border lg:min-h-[calc(100vh-4rem)]" aria-label={`${mockCommunity.name} channel workspace`}>
-        <header className="border-b border-pod-border px-5 py-6 font-sans text-zinc-100">
-          <span className="text-[11px] font-bold tracking-[0.08em] text-pod-accent uppercase">Pod Club community</span>
-          <h1 className="my-1 text-2xl font-bold">{mockCommunity.name}</h1>
-          <p className="m-0 text-[13px] text-zinc-400">{mockCommunity.members.toLocaleString()} members · {mockCommunity.activeNow} online</p>
+      <section className="channel-workspace" aria-label={`${mockCommunity.name} channel workspace`}>
+        <header className="channel-community-header">
+          <div><span>YOUR PODCLUB COMMUNITY</span><h1>{mockCommunity.name}</h1><p>{mockCommunity.members.toLocaleString()} members · {mockCommunity.activeNow} listening now</p></div>
+          <button className="outline-button" onClick={() => setView('create')}><Plus size={16} /> Create room</button>
         </header>
         {view === 'channels' && <ChannelList communityId={mockCommunity.id} onOpenChannel={openChannel} onCreateChannel={() => setView('create')} />}
         {view === 'create' && <CreateChannel communityId={mockCommunity.id} onCreated={(channel) => openChannel(channel.id)} onCancel={returnToChannels} />}
@@ -65,9 +72,8 @@ function DashboardPage() {
 }
 
 function Landing() {
-  // Always show the login/signup card first on site entry. The Login component
-  // itself will offer a "Continue as <user>" action when a session exists.
-  return <Login />;
+  const rooms = ['Lo-fi & Long Focus', 'Casefile Club', 'Afrobeats Deep Cuts'];
+  return <main className="landing"><Navbar /><section className="landing-hero"><div className="hero-copy"><span className="hero-pill"><Radio size={14} /> Now with 5 listening rooms per member</span><h1>The room where a record <em>actually gets discussed.</em></h1><p>PodClub is a small, invite-only listening room for people who take music and podcasts seriously. Start a channel, bring the right five people, and talk about what you are hearing.</p><div className="hero-actions"><Link to="/register" className="gold-button">Start a channel</Link><Link to="/dashboard" className="outline-button">Explore live rooms</Link></div><small>Free while we are small. No algorithm, no feed, no ads.</small></div><div className="hero-visual"><div className="record"><Headphones size={62} /></div></div></section><section className="landing-section"><div className="section-title"><div><h2>Rooms open right now</h2><p>A look at what members are listening to together this week.</p></div><Link to="/dashboard">Join to listen in →</Link></div><div className="mini-room-grid">{rooms.map((room, index) => <div className="mini-room" key={room}><div className={`mini-art art-${index}`}><span>{['LO-FI', 'TRUE CRIME', 'AFROBEATS'][index]}</span></div><h3>{room}</h3><p>{['Background music for people who ship things.', 'Weekly episode breakdowns. Spoiler-tagged.', 'Beyond the singles and the usual credits.'][index]}</p><small>{index + 2} members · 31m ago</small></div>)}</div></section><section className="landing-section feature-section"><h2>Built small on purpose, so the conversation stays good.</h2><div className="feature-grid"><div><Radio /><h3>Five rooms, not fifty</h3><p>You can own five channels at a time. Keep only rooms worth showing up for.</p></div><div><UsersRound /><h3>Invite-only by default</h3><p>Every channel has one private link for the people whose taste you trust.</p></div><div><MessageSquare /><h3>Threads that hold a thought</h3><p>Reply directly, edit a bad take, and keep the conversation legible.</p></div><div><ShieldCheck /><h3>Moderation that answers</h3><p>Report a member and an admin sees the context, not just the complaint.</p></div></div></section><section className="landing-cta"><Headphones /><h2>Your five best rooms are waiting.</h2><p>Takes about thirty seconds to set up. Bring one friend and it already works.</p><Link to="/register" className="gold-button">Create your account</Link></section></main>;
 }
 
 function App() {

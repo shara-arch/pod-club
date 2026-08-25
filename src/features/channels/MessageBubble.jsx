@@ -15,6 +15,7 @@ function initials(name = '') {
 
 function formatTime(isoString) {
   const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) return 'Just now';
   return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 }
 
@@ -80,7 +81,7 @@ export default function MessageBubble({ message, onOpenThread, channelName = 'ge
           message.imageUrl ? <img className="mt-1 max-h-64 rounded-lg border border-pod-border object-cover" src={message.imageUrl} alt={message.imageCaption || 'Shared image'} /> : <div className="pc-message__image-caption">{message.imageCaption || 'Image'}</div>
         )}
 
-        <div className="mt-2 flex gap-3 text-xs"><button onClick={handleReport} className="text-zinc-500 hover:text-red-300">{reported ? 'Reported' : 'Report'}</button>{isOwn && <><button onClick={() => setEditing(true)} className="text-zinc-500 hover:text-pod-accent">Edit</button><button onClick={() => dispatch(deleteMessage(message.id))} className="text-zinc-500 hover:text-red-300">Delete</button></>}</div>
+        <div className="pc-message__actions"><button onClick={handleReport}>{reported ? 'Reported' : 'Report'}</button>{isOwn && <><button onClick={() => setEditing(true)}>Edit</button><button className="danger" onClick={() => dispatch(deleteMessage(message.id))}>Delete</button></>}</div>
 
         {message.replyCount > 0 && (
           <button className="pc-message__thread-link" onClick={() => onOpenThread?.(message.threadRootId)}>

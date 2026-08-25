@@ -77,9 +77,20 @@ export default function AuthProvider( {children}) {
   const logout = () => {
     setCurrentUser(null);
   }; 
+  const updateProfile = ({ username, email }) => {
+    const updatedUser = {
+      ...currentUser,
+      username: username?.trim() || currentUser.username,
+      email: email?.trim() || '',
+    };
+    setCurrentUser(updatedUser);
+    const updatedUsers = users.map((user) => user.username === currentUser.username ? { ...user, ...updatedUser } : user);
+    setUsers(updatedUsers);
+    localStorage.setItem('usersDB', JSON.stringify(updatedUsers));
+  };
   return (
     // Expose authentication state and handler methods to child components
-    <AuthContext.Provider value={{ currentUser, signup, login, adminLogin, logout }}>
+    <AuthContext.Provider value={{ currentUser, signup, login, adminLogin, logout, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );

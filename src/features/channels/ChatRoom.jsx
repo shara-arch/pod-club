@@ -51,7 +51,7 @@ export default function ChatRoom({ channelId, onOpenThread, onBack, onEditChanne
           <p className="pc-chat__header-title">#{channel.name}</p>
           <p className="pc-chat__header-subtitle">{channel.description}</p>
         </div>
-        <div className="ml-auto flex gap-2"><button className="pc-chat__edit" type="button" onClick={handleInvite}>Invite</button><button className="pc-chat__edit" type="button" onClick={onEditChannel}>Edit</button><button className="pc-chat__edit text-red-300" type="button" onClick={handleDeleteChannel}>Delete</button></div>
+        <div className="pc-chat__actions"><button className="pc-chat__edit" type="button" onClick={handleInvite}>Invite</button><button className="pc-chat__edit" type="button" onClick={onEditChannel}>Edit</button><button className="pc-chat__edit pc-chat__delete" type="button" onClick={handleDeleteChannel}>Delete</button></div>
       </div>
 
       <div className="pc-chat__messages">

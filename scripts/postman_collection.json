@@ -1,0 +1,75 @@
+{
+  "info": {
+    "_postman_id": "podclub-backend-collection",
+    "name": "PodClub Backend (local)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Channels",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/channels", "host": ["{{baseUrl}}"], "path": ["channels"] }
+      }
+    },
+    {
+      "name": "Create Channel",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-User-ID", "value": "user1" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"rock-club\",\n  \"name\": \"Rock Club\",\n  \"category\": \"music\",\n  \"isPrivate\": false\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/channels", "host": ["{{baseUrl}}"], "path": ["channels"] }
+      }
+    },
+    {
+      "name": "List Messages",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/messages?channelId=rock-club", "host": ["{{baseUrl}}"], "path": ["messages"], "query": [{"key":"channelId","value":"rock-club"}] }
+      }
+    },
+    {
+      "name": "Post Message",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-User-ID", "value": "user1" }
+        ],
+        "body": {"mode":"raw","raw":"{\n  \"channelId\": \"rock-club\",\n  \"content\": \"Hello from Postman\",\n  \"type\": \"text\"\n}"},
+        "url": { "raw": "{{baseUrl}}/messages", "host": ["{{baseUrl}}"], "path": ["messages"] }
+      }
+    },
+    {
+      "name": "Report User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-User-ID", "value": "user1" }
+        ],
+        "body": {"mode":"raw","raw":"{\n  \"reportedUserId\": \"user2\",\n  \"reason\": \"Offensive\"\n}"},
+        "url": { "raw": "{{baseUrl}}/reports", "host": ["{{baseUrl}}"], "path": ["reports"] }
+      }
+    },
+    {
+      "name": "Admin: List Reports",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "X-User-ID", "value": "admin" } ],
+        "url": { "raw": "{{baseUrl}}/admin/reports", "host": ["{{baseUrl}}"], "path": ["admin","reports"] }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://127.0.0.1:5000" }
+  ]
+}

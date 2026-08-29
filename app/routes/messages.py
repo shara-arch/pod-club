@@ -146,7 +146,7 @@ def create_message():
         channel_id=data['channel_id'],
         author_id=user.id,
         message_type=data.get('type', 'text'),
-        content=data['content'].strip(),
+        content=(data.get('content') or '').strip(),
         subtitle=data.get('subtitle'),
         image_url=data.get('image_url'),
         image_caption=data.get('image_caption')

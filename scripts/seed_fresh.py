@@ -1,3 +1,5 @@
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 from datetime import datetime, timezone
@@ -14,6 +16,14 @@ def seed():
     app = create_app()
     with app.app_context():
         print("🌱 Seeding fresh database...")
+
+        # Clear existing data so the seed is idempotent
+        Message.query.delete()
+        ChannelMembership.query.delete()
+        Channel.query.delete()
+        User.query.delete()
+        db.session.commit()
+        print("🧹 Cleared existing data")
         
         # 1. Create users
         users = [

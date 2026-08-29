@@ -63,8 +63,10 @@ class ChannelUpdateSchema(Schema):
 
 class MessageCreateSchema(Schema):
     channel_id = fields.Str(required=True)
+    # content is optional for image messages (an image needs no caption text)
     content = fields.Str(
-        required=True,
+        required=False,
+        allow_none=True,
         validate=validate.Length(min=1, max=2000)
     )
     type = fields.Str(
@@ -72,7 +74,8 @@ class MessageCreateSchema(Schema):
         validate=validate.OneOf(['text', 'image', 'episode-share'])
     )
     subtitle = fields.Str(validate=validate.Length(max=255), allow_none=True)
-    image_url = fields.Url(allow_none=True)
+    # allow data URLs so uploaded images (base64) can be shared in chat
+    image_url = fields.Str(allow_none=True, validate=validate.Length(max=8_000_000))
     image_caption = fields.Str(validate=validate.Length(max=255), allow_none=True)
 
 

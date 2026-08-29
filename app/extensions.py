@@ -10,7 +10,7 @@ import logging
 db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
-cache = Cache(config={'CACHE_TYPE': 'simple'})  # Fix: Configure cache type
+cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})  # Fix: Configure cache type
 limiter = Limiter(key_func=get_remote_address, default_limits=["100 per hour"])  # Fix: Set default limits
 swagger = Swagger()
 

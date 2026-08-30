@@ -22,3 +22,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+instance/
+repomix-output.xml
+frontend-club-copy
+venv/
+pod-club

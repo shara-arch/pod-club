@@ -19,7 +19,12 @@ def create_app(config_name=None):
         config_name = os.getenv('FLASK_ENV', 'development')
     
     app = Flask(__name__)
-    app.config.from_object(config[config_name])
+    if isinstance(config_name, dict):
+        # Allow passing a config dict directly (used in tests)
+        app.config.from_object(config['testing'])
+        app.config.update(config_name)
+    else:
+        app.config.from_object(config[config_name])
     
     # Initialize extensions
     db.init_app(app)

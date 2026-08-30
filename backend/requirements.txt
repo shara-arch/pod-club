@@ -1,0 +1,13 @@
+# Phase-1 backend dependencies.
+#
+# Area 1 (Database & Models) owns only the database layer here. The API, auth
+# and messaging areas append their own dependencies (fastapi, uvicorn, passlib,
+# python-jose, pytest, ...) on their branches.
+#
+# Note on versions: SQLAlchemy < 2.0.40 raises a TypeError on import under
+# Python 3.14, so do not pin lower than the versions below.
+
+SQLAlchemy==2.0.52
+alembic==1.19.1
+psycopg[binary]==3.3.4
+pydantic-settings==2.6.1

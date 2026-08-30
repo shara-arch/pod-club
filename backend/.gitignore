@@ -1,0 +1,15 @@
+# Real environment files stay out of git — .env.example is the tracked template.
+.env
+.env.*
+!.env.example
+
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local uploads directory for image messages.
+uploads/
+
+.pytest_cache/
+.mypy_cache/

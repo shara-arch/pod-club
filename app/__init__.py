@@ -5,6 +5,8 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from flasgger import Swagger
 
+load_dotenv()
+
 from .config import config  # This should work
 from .extensions import db, migrate, jwt, cache, limiter, swagger, setup_logging
 from .exceptions import APIError, ValidationError, AuthenticationError, ForbiddenError, NotFoundError, ConflictError
@@ -12,7 +14,6 @@ from .exceptions import APIError, ValidationError, AuthenticationError, Forbidde
 
 def create_app(config_name=None):
     """Application factory."""
-    load_dotenv()
     
     # Determine config
     if config_name is None:

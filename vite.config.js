@@ -11,7 +11,7 @@ export default defineConfig({
     watch: {
       usePolling: true,
       interval: 1000,
-      ignored: ['**/node_modules/**', '**/.git/**', '**/dist/**', '**/podclub/**'],
+      ignored: ['**/node_modules/**', '**/.git/**', '**/dist/**', '**/podclub/**', '**/db.json', '**/package-lock.json', '**/package.json'],
     },
     proxy: {
       '/api': {

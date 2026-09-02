@@ -76,7 +76,7 @@ export default function Login({ initialMode = 'login', admin = false }) {
         <div className="backdrop-blur-xl bg-[#161616]/90 border border-[#2a2a2a] rounded-2xl shadow-2xl shadow-black/50 overflow-hidden">
           {/* Header */}
           <div className="px-8 pt-10 pb-6 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#e8935f] shadow-lg shadow-[#e8935f]/20 mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#FFC229] shadow-lg shadow-[#FFC229]/20 mb-4">
               <Headphones className="w-8 h-8 text-black" strokeWidth={2.5} />
             </div>
             <h1 className="text-3xl font-bold text-white tracking-tight">
@@ -92,7 +92,7 @@ export default function Login({ initialMode = 'login', admin = false }) {
             <div className="mx-8 mb-4 px-4 py-3 rounded-lg bg-white/5 border border-white/6 text-sm text-white/80 flex flex-col items-center gap-3">
               <div>Signed in as <strong className="text-white">{currentUser.username}</strong></div>
               <div className="flex gap-3">
-                <button type="button" onClick={() => navigate(from, { replace: true })} className="px-4 py-2 rounded-md bg-[#e8935f] text-black font-medium">Continue</button>
+                <button type="button" onClick={() => navigate(from, { replace: true })} className="px-4 py-2 rounded-md bg-[#FFC229] text-black font-medium">Continue</button>
                 <button type="button" onClick={() => { logout(); setError(''); }} className="px-4 py-2 rounded-md border border-white/10 text-white bg-black/20">Switch account</button>
               </div>
             </div>
@@ -111,12 +111,12 @@ export default function Login({ initialMode = 'login', admin = false }) {
             <div className="space-y-2">
               <label
                 htmlFor="uname"
-                className="block text-sm font-medium text-[#e8935f]"
+                className="block text-sm font-medium text-[#FFC229]"
               >
                 Username
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#e8935f]/70" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FFC229]/70" />
                 <input
                   id="uname"
                   type="text"
@@ -124,27 +124,27 @@ export default function Login({ initialMode = 'login', admin = false }) {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
-                  className="w-full pl-11 pr-4 py-3 rounded-lg bg-black/40 border border-[#2a2a2a] text-white placeholder-white/30 focus:outline-none focus:border-[#e8935f] focus:ring-2 focus:ring-[#e8935f]/20 transition-all"
+                  className="w-full pl-11 pr-4 py-3 rounded-lg bg-black/40 border border-[#2a2a2a] text-white placeholder-white/30 focus:outline-none focus:border-[#FFC229] focus:ring-2 focus:ring-[#FFC229]/20 transition-all"
                 />
               </div>
             </div>
 
             {isSignUp && !admin && (
               <div className="space-y-2">
-                <label htmlFor="email" className="block text-sm font-medium text-[#e8935f]">Email</label>
-                <input id="email" type="email" placeholder="you@mail.com" value={email} onChange={(e)=>setEmail(e.target.value)} required className="w-full pl-4 pr-4 py-3 rounded-lg bg-black/40 border border-[#2a2a2a] text-white placeholder-white/30 focus:outline-none focus:border-[#e8935f] focus:ring-2 focus:ring-[#e8935f]/20 transition-all" />
+                <label htmlFor="email" className="block text-sm font-medium text-[#FFC229]">Email</label>
+                <input id="email" type="email" placeholder="you@mail.com" value={email} onChange={(e)=>setEmail(e.target.value)} required className="w-full pl-4 pr-4 py-3 rounded-lg bg-black/40 border border-[#2a2a2a] text-white placeholder-white/30 focus:outline-none focus:border-[#FFC229] focus:ring-2 focus:ring-[#FFC229]/20 transition-all" />
               </div>
             )}
 
             <div className="space-y-2">
               <label
                 htmlFor="psw"
-                className="block text-sm font-medium text-[#e8935f]"
+                className="block text-sm font-medium text-[#FFC229]"
               >
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#e8935f]/70" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#FFC229]/70" />
                 <input
                   id="psw"
                   type="password"
@@ -152,15 +152,15 @@ export default function Login({ initialMode = 'login', admin = false }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full pl-11 pr-4 py-3 rounded-lg bg-black/40 border border-[#2a2a2a] text-white placeholder-white/30 focus:outline-none focus:border-[#e8935f] focus:ring-2 focus:ring-[#e8935f]/20 transition-all"
+                  className="w-full pl-11 pr-4 py-3 rounded-lg bg-black/40 border border-[#2a2a2a] text-white placeholder-white/30 focus:outline-none focus:border-[#FFC229] focus:ring-2 focus:ring-[#FFC229]/20 transition-all"
                 />
               </div>
             </div>
 
             {isSignUp && !admin && (
               <div className="space-y-2">
-                <label htmlFor="confirm" className="block text-sm font-medium text-[#e8935f]">Confirm Password</label>
-                <input id="confirm" type="password" placeholder="Repeat password" value={confirm} onChange={(e)=>setConfirm(e.target.value)} required className="w-full pl-4 pr-4 py-3 rounded-lg bg-black/40 border border-[#2a2a2a] text-white placeholder-white/30 focus:outline-none focus:border-[#e8935f] focus:ring-2 focus:ring-[#e8935f]/20 transition-all" />
+                <label htmlFor="confirm" className="block text-sm font-medium text-[#FFC229]">Confirm Password</label>
+                <input id="confirm" type="password" placeholder="Repeat password" value={confirm} onChange={(e)=>setConfirm(e.target.value)} required className="w-full pl-4 pr-4 py-3 rounded-lg bg-black/40 border border-[#2a2a2a] text-white placeholder-white/30 focus:outline-none focus:border-[#FFC229] focus:ring-2 focus:ring-[#FFC229]/20 transition-all" />
                 <div className="mt-2 flex gap-2 items-center">
                   <div className="h-2 w-24 bg-zinc-800 rounded-full overflow-hidden">
                     <div style={{width: `${(strength/4)*100}%`}} className={`h-2 bg-gradient-to-r from-amber-400 to-emerald-400`} />
@@ -170,7 +170,7 @@ export default function Login({ initialMode = 'login', admin = false }) {
               </div>
             )}
 
-            <button type="submit" disabled={loading} className="w-full py-3 rounded-lg bg-[#e8935f] text-black font-semibold tracking-wide shadow-lg shadow-[#e8935f]/20 hover:bg-[#e8935f]/90 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-60">
+            <button type="submit" disabled={loading} className="w-full py-3 rounded-lg bg-[#FFC229] text-black font-semibold tracking-wide shadow-lg shadow-[#FFC229]/20 hover:bg-[#FFC229]/90 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-60">
               {loading ? (admin ? 'Signing in…' : isSignUp ? 'Creating account…' : 'Signing in…') : (admin ? 'Admin Log In' : isSignUp ? 'Sign Up' : 'Log In')}
             </button>
 
@@ -191,13 +191,13 @@ export default function Login({ initialMode = 'login', admin = false }) {
                 setIsSignUp(!isSignUp);
                 setError('');
               }}
-              className="w-full py-3 rounded-lg bg-black/40 border border-[#2a2a2a] text-[#e8935f] hover:bg-[#e8935f]/10 hover:border-[#e8935f]/40 transition-all text-sm font-medium"
+              className="w-full py-3 rounded-lg bg-black/40 border border-[#2a2a2a] text-[#FFC229] hover:bg-[#FFC229]/10 hover:border-[#FFC229]/40 transition-all text-sm font-medium"
             >
               {isSignUp
                 ? 'Already have an account? Log In'
                 : 'Need an account? Sign Up'}
             </button>}
-            {admin && <p className="rounded-lg border border-[#e8935f]/20 bg-[#e8935f]/5 px-3 py-2 text-center text-xs text-white/55">Demo access: <span className="text-[#e8935f]">admin / podclub</span></p>}
+            {admin && <p className="rounded-lg border border-[#FFC229]/20 bg-[#FFC229]/5 px-3 py-2 text-center text-xs text-white/55">Demo access: <span className="text-[#FFC229]">admin / podclub</span></p>}
           </form>
 
           {/* footer text */}

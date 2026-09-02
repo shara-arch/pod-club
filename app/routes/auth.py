@@ -232,3 +232,39 @@ def get_current_user():
         raise AuthenticationError("User not found")
     
     return jsonify(user.to_dict()), 200
+
+
+@auth_bp.patch("/me")
+@jwt_required()
+def update_current_user():
+    """Update current user profile."""
+    user_id = get_jwt_identity()
+    user = db.session.get(User, user_id)
+    
+    if not user:
+        raise AuthenticationError("User not found")
+    
+    data = request.get_json()
+    if not data:
+        raise ValidationError("Request body is required")
+    
+    if 'display_name' in data:
+        name = data['display_name'].strip()
+        if not name or len(name) > 100:
+            raise ValidationError("Display name must be 1-100 characters")
+        user.display_name = name
+    
+    if 'email' in data:
+        email = data['email'].strip()
+        if not email:
+            raise ValidationError("Email cannot be empty")
+        existing = User.query.filter(User.email == email, User.id != user.id).first()
+        if existing:
+            raise ConflictError("Email already in use")
+        user.email = email
+    
+    if 'avatar_url' in data:
+        user.avatar_url = data.get('avatar_url')
+    
+    db.session.commit()
+    return jsonify(user.to_dict()), 200

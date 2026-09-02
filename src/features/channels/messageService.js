@@ -1,16 +1,29 @@
 const API_URL = '/api';
-const CURRENT_USER = { id: 'me', name: 'You', avatar: null };
 import { mockMessages, mockThreads } from './mockData';
 
-async function request(path, options) {
-  const response = await fetch(`${API_URL}${path}`, { headers: { 'Content-Type': 'application/json' }, ...options });
-  if (!response.ok) throw new Error(`Request failed (${response.status})`);
-  return response.status === 204 ? null : response.json();
+function getHeaders() {
+  const headers = { 'Content-Type': 'application/json' };
+  try {
+    const token = localStorage.getItem('access_token');
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+  } catch {}
+  return headers;
+}
+
+async function request(path, options = {}) {
+  const response = await fetch(`${API_URL}${path}`, { headers: getHeaders(), ...options });
+  if (!response.ok) {
+    const body = await response.json().catch(() => null);
+    throw new Error(body?.error || `Request failed (${response.status})`);
+  }
+  if (response.status === 204) return null;
+  return response.json();
 }
 
 export async function getMessages(channelId) {
   try {
-    return await request(`/messages?channelId=${encodeURIComponent(channelId)}&_sort=timestamp&_order=asc`);
+    const res = await request(`/messages?channelId=${encodeURIComponent(channelId)}`);
+    return res.data || res;
   } catch (err) {
     return mockMessages[channelId] || [];
   }
@@ -18,26 +31,43 @@ export async function getMessages(channelId) {
 
 export function sendMessage(channelId, content) {
   if (!content?.trim()) return Promise.reject(new Error('Message cannot be empty'));
-  const payload = { id: `m-${Date.now()}`, channelId, author: CURRENT_USER, content: content.trim(), timestamp: new Date().toISOString(), type: 'text', replyCount: 0 };
-  return request('/messages', { method: 'POST', body: JSON.stringify(payload) }).catch(() => Promise.resolve(payload));
+  return request('/messages', {
+    method: 'POST',
+    body: JSON.stringify({
+      channel_id: channelId,
+      content: content.trim(),
+      type: 'text',
+    }),
+  });
 }
 
 export function sendImageMessage(channelId, imageUrl, caption = 'Shared image') {
-  const payload = { id: `m-${Date.now()}`, channelId, author: CURRENT_USER, imageUrl, imageCaption: caption, timestamp: new Date().toISOString(), type: 'image', replyCount: 0 };
-  return request('/messages', { method: 'POST', body: JSON.stringify(payload) }).catch(() => Promise.resolve(payload));
+  return request('/messages', {
+    method: 'POST',
+    body: JSON.stringify({
+      channel_id: channelId,
+      content: caption,
+      type: 'image',
+      image_url: imageUrl,
+      image_caption: caption,
+    }),
+  });
 }
 
 export function updateMessage(messageId, content) {
-  return request(`/messages/${messageId}`, { method: 'PATCH', body: JSON.stringify({ content: content.trim(), edited: true }) }).catch(() => Promise.resolve({ id: messageId, content }));
+  return request(`/messages/${messageId}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ content: content.trim() }),
+  });
 }
 
 export function removeMessage(messageId) {
-  return request(`/messages/${messageId}`, { method: 'DELETE' }).catch(() => Promise.resolve(null));
+  return request(`/messages/${messageId}`, { method: 'DELETE' });
 }
 
 export async function getThread(threadId) {
   try {
-    return await request(`/threads/${threadId}`);
+    return await request(`/messages/${threadId}/thread`);
   } catch (err) {
     return mockThreads[threadId] || null;
   }
@@ -45,13 +75,19 @@ export async function getThread(threadId) {
 
 export async function sendReply(threadId, content) {
   if (!content?.trim()) throw new Error('Reply cannot be empty');
-  const newReply = { id: `tm-${Date.now()}`, author: CURRENT_USER, content: content.trim(), timestamp: new Date().toISOString() };
   try {
     const thread = await getThread(threadId);
-    await request(`/threads/${threadId}`, { method: 'PATCH', body: JSON.stringify({ replies: [...(thread?.replies || []), newReply] }) });
+    const newReply = await request('/messages', {
+      method: 'POST',
+      body: JSON.stringify({
+        channel_id: thread.channelId,
+        content: content.trim(),
+        parent_id: threadId,
+      }),
+    });
     return newReply;
   } catch (err) {
-    // fallback: return reply so UI can optimistically add it
-    return Promise.resolve(newReply);
+    const fallback = { id: `tm-${Date.now()}`, author: { id: 'me', name: 'You' }, content: content.trim(), timestamp: new Date().toISOString() };
+    return Promise.resolve(fallback);
   }
 }

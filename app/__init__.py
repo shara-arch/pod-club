@@ -14,11 +14,11 @@ from .exceptions import APIError, ValidationError, AuthenticationError, Forbidde
 
 def create_app(config_name=None):
     """Application factory."""
-    
+
     # Determine config
     if config_name is None:
         config_name = os.getenv('FLASK_ENV', 'development')
-    
+
     app = Flask(__name__)
     if isinstance(config_name, dict):
         # Allow passing a config dict directly (used in tests)
@@ -26,23 +26,23 @@ def create_app(config_name=None):
         app.config.update(config_name)
     else:
         app.config.from_object(config[config_name])
-    
+
     # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
     cache.init_app(app)
     limiter.init_app(app)
-    
+
     # CORS
     CORS(app, resources={
         r"/api/*": {"origins": app.config['CORS_ORIGINS']},
         r"/apidocs/*": {"origins": "*"}
     })
-    
+
     # Setup logging
     setup_logging(app)
-    
+
     # Initialize Swagger
     swagger.template = {
         "swagger": "2.0",
@@ -131,7 +131,7 @@ def create_app(config_name=None):
         }
     }
     swagger.init_app(app)
-    
+
     # Register blueprints
     from .routes.health import health_bp
     from .routes.auth import auth_bp
@@ -139,35 +139,37 @@ def create_app(config_name=None):
     from .routes.messages import messages_bp
     from .routes.moderation import moderation_bp
     from .routes.admin import admin_bp
-    
+    from .routes.itunes import itunes_bp
+
     app.register_blueprint(health_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(channels_bp)
     app.register_blueprint(messages_bp)
     app.register_blueprint(moderation_bp)
     app.register_blueprint(admin_bp)
-    
+    app.register_blueprint(itunes_bp)
+
     # Error handlers
     @app.errorhandler(APIError)
     def handle_api_error(error):
         return error.to_response()
-    
+
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({"error": "Resource not found", "status": 404}), 404
-    
+
     @app.errorhandler(405)
     def method_not_allowed(error):
         return jsonify({"error": "Method not allowed", "status": 405}), 405
-    
+
     @app.errorhandler(500)
     def internal_error(error):
         app.logger.error(f"Internal error: {error}")
         return jsonify({"error": "Internal server error", "status": 500}), 500
-    
+
     @app.errorhandler(Exception)
     def handle_unexpected_error(error):
         app.logger.error(f"Unhandled error: {error}", exc_info=True)
         return jsonify({"error": "An unexpected error occurred", "status": 500}), 500
-    
+
     return app

@@ -12,6 +12,21 @@ from ..exceptions import ValidationError, NotFoundError, ForbiddenError, APIErro
 messages_bp = Blueprint("messages", __name__, url_prefix="/api/messages")
 
 
+def ensure_membership(channel, user):
+    """Auto-join the user to a public channel so they can read/send messages."""
+    if channel.is_member(user.id):
+        return
+    if channel.is_private:
+        raise ForbiddenError("You must be a channel member")
+    from ..models import ChannelMembership, MembershipRole
+    db.session.add(ChannelMembership(
+        channel_id=channel.id,
+        user_id=user.id,
+        role=MembershipRole.MEMBER,
+    ))
+    db.session.commit()
+
+
 @messages_bp.get("")
 @jwt_required()
 @swag_from({
@@ -50,34 +65,33 @@ def list_messages():
     """List messages in a channel."""
     user = get_current_user()
     channel_id = request.args.get('channelId')
-    
+
     if not channel_id:
         raise ValidationError("channelId is required")
-    
-    # Check access
+
+    # Check access (public channels auto-join)
     channel = db.session.get(Channel, channel_id)
     if not channel:
         raise NotFoundError("Channel not found")
-    
-    if not channel.is_member(user.id) and not user.is_admin():
-        raise ForbiddenError("You must be a channel member")
-    
+
+    ensure_membership(channel, user)
+
     # Pagination
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 50, type=int)
-    
+
     # Get messages
     query = select(Message).where(
         Message.channel_id == channel_id,
         Message.parent_id.is_(None),
         Message.deleted_at.is_(None)
     )
-    
+
     total = db.session.scalar(select(func.count()).select_from(query.subquery()))
     query = query.order_by(Message.created_at.desc()).offset((page - 1) * per_page).limit(per_page)
-    
+
     messages = db.session.scalars(query).all()
-    
+
     return jsonify({
         "data": [message_dict(m) for m in messages],
         "pagination": {
@@ -125,36 +139,44 @@ def create_message():
     """Send a new message."""
     user = get_current_user()
     data = request.get_json()
-    
+
     if not data:
         raise ValidationError("Request body is required")
-    
+
     schema = MessageCreateSchema()
     errors = schema.validate(data)
     if errors:
         raise ValidationError("Validation failed", errors)
-    
+
     channel = db.session.get(Channel, data['channel_id'])
     if not channel:
         raise NotFoundError("Channel not found")
-    
-    if not channel.is_member(user.id):
-        raise ForbiddenError("You must be a channel member")
-    
+
+    ensure_membership(channel, user)
+
+    parent_id = data.get('parent_id')
+    if data.get('type', 'text') == 'text' and not (data.get('content') or '').strip():
+        raise ValidationError("Message content is required")
+    if parent_id:
+        parent = db.session.get(Message, parent_id)
+        if not parent or parent.channel_id != data['channel_id']:
+            raise ValidationError("Invalid parent message")
+
     message = Message(
         id=f"m-{now_utc().timestamp()}-{user.id[:8]}",
         channel_id=data['channel_id'],
         author_id=user.id,
+        parent_id=parent_id,
         message_type=data.get('type', 'text'),
-        content=(data.get('content') or '').strip(),
+        content=(data.get('content') or '').strip() or ('🖼 ' + data['image_caption'] if data.get('type') == 'image' and data.get('image_caption') else ''),
         subtitle=data.get('subtitle'),
         image_url=data.get('image_url'),
         image_caption=data.get('image_caption')
     )
-    
+
     db.session.add(message)
     db.session.commit()
-    
+
     return jsonify(message_dict(message, reply_count=0)), 201
 
 
@@ -190,29 +212,29 @@ def update_message(message_id):
     """Update a message."""
     user = get_current_user()
     message = db.session.get(Message, message_id)
-    
+
     if not message:
         raise NotFoundError("Message not found")
-    
+
     if message.author_id != user.id:
         raise ForbiddenError("Only the author can edit this message")
-    
+
     if message.is_deleted():
         raise ForbiddenError("Cannot edit a deleted message")
-    
+
     data = request.get_json()
     if not data:
         raise ValidationError("Request body is required")
-    
+
     schema = MessageUpdateSchema()
     errors = schema.validate(data)
     if errors:
         raise ValidationError("Validation failed", errors)
-    
+
     message.content = data['content'].strip()
     message.edited_at = now_utc()
     db.session.commit()
-    
+
     return jsonify(message_dict(message)), 200
 
 
@@ -236,14 +258,44 @@ def delete_message(message_id):
     """Delete a message."""
     user = get_current_user()
     message = db.session.get(Message, message_id)
-    
+
     if not message:
         raise NotFoundError("Message not found")
-    
+
     if message.author_id != user.id:
         raise ForbiddenError("Only the author can delete this message")
-    
+
     message.deleted_at = now_utc()
     db.session.commit()
-    
+
     return "", 204
+
+
+@messages_bp.get("/<message_id>/thread")
+@jwt_required()
+def get_thread(message_id):
+    """Get a thread: root message + replies."""
+    user = get_current_user()
+    root = db.session.get(Message, message_id)
+    if not root:
+        raise NotFoundError("Message not found")
+
+    channel = db.session.get(Channel, root.channel_id)
+    if not channel:
+        raise NotFoundError("Channel not found")
+    ensure_membership(channel, user)
+    if channel.is_private and not channel.is_member(user.id) and not user.is_admin():
+        raise ForbiddenError("Access denied")
+
+    replies_q = select(Message).where(
+        Message.parent_id == message_id,
+        Message.deleted_at.is_(None),
+    ).order_by(Message.created_at.asc())
+    replies = db.session.scalars(replies_q).all()
+
+    return jsonify({
+        "id": root.id,
+        "channelId": root.channel_id,
+        "rootMessage": message_dict(root),
+        "replies": [message_dict(r) for r in replies],
+    }), 200

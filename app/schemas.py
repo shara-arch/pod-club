@@ -44,7 +44,7 @@ class ChannelCreateSchema(Schema):
     category = fields.Str(
         required=True,
         validate=validate.OneOf([
-            'True Crime', 'Comedy', 'Music Lab', 'Tech & Dev', 
+            'True Crime', 'Comedy', 'Music Lab', 'Tech & Dev',
             'Culture', 'Sports Room', 'General'
         ])
     )
@@ -63,11 +63,12 @@ class ChannelUpdateSchema(Schema):
 
 class MessageCreateSchema(Schema):
     channel_id = fields.Str(required=True)
+    parent_id = fields.Str(allow_none=True, load_default=None)
     # content is optional for image messages (an image needs no caption text)
     content = fields.Str(
         required=False,
         allow_none=True,
-        validate=validate.Length(min=1, max=2000)
+        validate=validate.Length(min=0, max=2000)
     )
     type = fields.Str(
         missing='text',

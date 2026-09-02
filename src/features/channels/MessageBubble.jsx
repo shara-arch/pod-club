@@ -26,7 +26,7 @@ export default function MessageBubble({ message, onOpenThread, channelName = 'ge
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(message.content || '');
   const [reported, setReported] = useState(false);
-  const isOwn = message.author?.id === 'me' || message.author?.name === 'You';
+  const isOwn = message.author?.id === currentUser?.id;
 
   async function saveEdit() { if (draft.trim()) { await dispatch(editMessage({ messageId: message.id, content: draft })).unwrap(); setEditing(false); } }
 

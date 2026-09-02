@@ -1,18 +1,31 @@
 const API_URL = '/api';
 import { mockChannels } from './mockData';
 
-async function request(path, options) {
-  const response = await fetch(`${API_URL}${path}`, { headers: { 'Content-Type': 'application/json' }, ...options });
-  if (!response.ok) throw new Error(`Request failed (${response.status})`);
-  return response.status === 204 ? null : response.json();
+function getHeaders() {
+  const headers = { 'Content-Type': 'application/json' };
+  try {
+    const token = localStorage.getItem('access_token');
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+  } catch {}
+  return headers;
 }
 
-export async function getChannels(communityId) {
+async function request(path, options = {}) {
+  const response = await fetch(`${API_URL}${path}`, { headers: getHeaders(), ...options });
+  if (!response.ok) {
+    const body = await response.json().catch(() => null);
+    throw new Error(body?.error || `Request failed (${response.status})`);
+  }
+  if (response.status === 204) return null;
+  return response.json();
+}
+
+export async function getChannels() {
   try {
-    return await request(`/channels?communityId=${encodeURIComponent(communityId)}`);
+    const res = await request('/channels');
+    return res.data || res;
   } catch (err) {
-    // Fallback to local mock data when API not available
-    return mockChannels.filter((c) => !communityId || c.communityId === communityId || c.communityId == null);
+    return mockChannels;
   }
 }
 
@@ -24,18 +37,33 @@ export async function getChannel(channelId) {
   }
 }
 
-export function createChannel({ name, description, isPrivate, category, communityId }) {
+export function createChannel({ name, description, isPrivate, category }) {
   if (!name?.trim()) return Promise.reject(new Error('Channel name is required'));
   const slug = name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-  // Try API, but if it fails return a locally-constructed channel object so UI can continue
-  const payload = { id: `${slug}-${Date.now()}`, name: name.trim(), description: description || '', isPrivate: Boolean(isPrivate), category: category || 'True Crime', communityId, lastMessage: null, lastMessageAuthor: null, hasUnread: false };
-  return request('/channels', { method: 'POST', body: JSON.stringify(payload) }).catch(() => Promise.resolve(payload));
+  return request('/channels', {
+    method: 'POST',
+    body: JSON.stringify({
+      id: slug,
+      name: name.trim(),
+      description: description || '',
+      is_private: Boolean(isPrivate),
+      category: category || 'True Crime',
+    }),
+  });
 }
 
 export function updateChannel(channelId, updates) {
-  return request(`/channels/${channelId}`, { method: 'PATCH', body: JSON.stringify(updates) }).catch(() => Promise.resolve({ id: channelId, ...updates }));
+  const payload = {};
+  if (updates.name !== undefined) payload.name = updates.name;
+  if (updates.description !== undefined) payload.description = updates.description;
+  if (updates.category !== undefined) payload.category = updates.category;
+  if (updates.isPrivate !== undefined) payload.is_private = updates.isPrivate;
+  return request(`/channels/${channelId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+  });
 }
 
 export function deleteChannel(channelId) {
-  return request(`/channels/${channelId}`, { method: 'DELETE' }).catch(() => Promise.resolve(null));
+  return request(`/channels/${channelId}`, { method: 'DELETE' });
 }

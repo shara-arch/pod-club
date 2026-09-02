@@ -1,0 +1,12 @@
+node_modules
+venv
+.vercel
+__pycache__
+*.pyc
+dist
+backend
+podclub
+tests
+.pytest_cache
+.env
+.env.*
